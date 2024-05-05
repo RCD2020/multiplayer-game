@@ -3,6 +3,8 @@ Robert Davis
 2024.05.05
 '''
 
+from GameInstance import GameInstance
+
 from random import choice
 from time import time
 
@@ -20,9 +22,11 @@ class ServerInstance:
         # create id for game
         id = self.new_game_id()
 
-        # TODO create game instance
+        # create game instance
+        new_game = GameInstance(id)
 
-        # TODO add game instance to games
+        # add game instance to games
+        self.games[id] = new_game
 
         # return id
         return id
