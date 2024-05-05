@@ -24,10 +24,14 @@ def join_game():
 # ----------------------------------------------------------------------
 # PRODUCTION SOCKETS
 # ----------------------------------------------------------------------
+# TODO handle identification of clients
 @socketio.on('connect')
 def handle_connect():
-    # this can be used as a unique identifier for clients
-    print('sid', request.sid)
+    'Authenticates each client'
+    # TODO use request.sid to identify client
+
+    # TODO save to custom identifier as the sid changes everytime they
+    # connect
 
 
 # TODO handle sockets between server and client
