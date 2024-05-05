@@ -13,6 +13,10 @@ Robert Davis
         <form action="/game" method="post">
             <label for="game_id">Game ID:</label>
             <input type="text" name="game_id" id="game_id">
+            <input
+                type="hidden" name="game_action"
+                id="game_action" value="join"
+            >
             <input type="submit" value="Join">
         </form>
 

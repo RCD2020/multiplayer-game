@@ -39,7 +39,7 @@ def game():
 # TODO game creation page
 @app.route('/create')
 def create_game():
-    return 'test'
+    return render_template('create_game.html')
 
 
 # ----------------------------------------------------------------------
