@@ -1,5 +1,5 @@
-from flask import Flask, render_template
-from flask_socketio import SocketIO
+from flask import Flask, render_template, url_for
+from flask_socketio import SocketIO, emit
 
 app = Flask(__name__)
 socketio = SocketIO(app)
@@ -7,12 +7,12 @@ socketio = SocketIO(app)
 
 @app.route('/')
 def index():
-    return 'test'
+    return render_template('index.html')
 
 
-@socketio.on('test')
-def handle_test(json_data):
-    print('Received', json_data)
+@socketio.on('send_json')
+def handle_send_json():
+    emit('json_response', {'test': True})
 
 
 if __name__ == '__main__':
