@@ -13,8 +13,8 @@ socketio = SocketIO(app)
 server = ServerInstance()
 
 
-@app.route('/')
-def index():
+@app.route('test/')
+def test_landing():
     return render_template('index.html')
 
 
