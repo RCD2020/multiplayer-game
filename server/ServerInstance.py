@@ -3,7 +3,7 @@ Robert Davis
 2024.05.05
 '''
 
-from GameInstance import GameInstance
+from server.GameInstance import GameInstance
 
 from random import choice
 from time import time
