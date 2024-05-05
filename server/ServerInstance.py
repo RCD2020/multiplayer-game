@@ -3,6 +3,7 @@ Robert Davis
 2024.05.05
 '''
 
+from random import choice
 from time import time
 
 
@@ -16,13 +17,15 @@ class ServerInstance:
     def create_game(self) -> str:
         'Creates a new game and returns the id'
 
-        # TODO create id for game
+        # create id for game
+        id = self.new_game_id()
 
         # TODO create game instance
 
         # TODO add game instance to games
 
-        # TODO return id
+        # return id
+        return id
 
 
     def clear_old_games(self):
@@ -35,8 +38,18 @@ class ServerInstance:
         game instances
         '''
 
-        # TODO generate random id
+        # generate random id
+        def generate_id() -> str:
+            'Generates the id'
+            valid_chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+            
+            return ''.join([choice(valid_chars) for _ in range(6)])
 
-        # TODO check for collision
 
-        # TODO return id
+        # check for collision
+        id = generate_id()
+        while id in self.games:
+            id = generate_id()
+
+        # return id
+        return id
