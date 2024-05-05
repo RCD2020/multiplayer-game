@@ -5,19 +5,11 @@
         <title>Test</title>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
-        <script defer>
-            var socket = io.connect('http://192.168.86.47:42069');
-
-            socket.on('connect', function() {
-                socket.emit('send_json');
-            });
-
-            socket.on('json_response', function(data) {
-                console.log('Received JSON:', data);
-            });
-        </script>
+        <script src="{{ url_for('static', filename='index.js') }}" defer></script>
     </head>
     <body>
         <div id="messages"></div>
+        <input type="text" id="message">
+        <input type="submit" id="submit_message">
     </body>
 </html>
