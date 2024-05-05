@@ -33,7 +33,11 @@ class ServerInstance:
 
 
     def clear_old_games(self):
-        'TODO clear games with a last_action of over an hour ago'
+        'clear games with a last_action of over an hour ago'
+
+        # TODO get barrier for deletion (current time - an hour)
+
+        # TODO loop through games and destroy old games
 
     
     def new_game_id(self) -> str:
