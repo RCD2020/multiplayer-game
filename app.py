@@ -8,6 +8,7 @@ from flask_socketio import SocketIO, emit
 
 app = Flask(__name__)
 socketio = SocketIO(app)
+# TODO create server instance
 
 
 @app.route('/')
@@ -23,6 +24,9 @@ def handle_send_json():
 @socketio.on('send_server')
 def handle_send_server(json):
     socketio.emit('send_client', json)
+
+
+# TODO handle sockets between server and client
 
 
 if __name__ == '__main__':
