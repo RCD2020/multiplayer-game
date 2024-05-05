@@ -1,3 +1,6 @@
+// Robert Davis
+// 2024.05.04
+
 var socket = io.connect('http://192.168.86.47:42069');
 var messages = document.getElementById('messages');
 var message_field = document.getElementById('message');
