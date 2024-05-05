@@ -14,7 +14,15 @@ class ServerInstance:
 
 
     def create_game(self) -> str:
-        'TODO Creates a new game and returns the id'
+        'Creates a new game and returns the id'
+
+        # TODO create game instance
+
+        # TODO create id for game
+
+        # TODO add game instance to games
+
+        # TODO return id
 
 
     def clear_old_games(self):
