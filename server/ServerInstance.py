@@ -16,9 +16,9 @@ class ServerInstance:
     def create_game(self) -> str:
         'Creates a new game and returns the id'
 
-        # TODO create game instance
-
         # TODO create id for game
+
+        # TODO create game instance
 
         # TODO add game instance to games
 
@@ -27,3 +27,16 @@ class ServerInstance:
 
     def clear_old_games(self):
         'TODO clear games with a last_action of over an hour ago'
+
+    
+    def new_game_id(self) -> str:
+        '''
+        Creates a new game id that doesn\'t collide with any other
+        game instances
+        '''
+
+        # TODO generate random id
+
+        # TODO check for collision
+
+        # TODO return id
