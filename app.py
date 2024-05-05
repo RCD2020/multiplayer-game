@@ -5,7 +5,7 @@ Robert Davis
 
 from server.ServerInstance import ServerInstance
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, redirect, request
 from flask_socketio import SocketIO, emit
 
 app = Flask(__name__)
@@ -19,6 +19,27 @@ server = ServerInstance()
 @app.route('/')
 def join_game():
     return render_template('game_id.html')
+
+
+@app.route('/game', methods=['POST'])
+def game():
+    # TODO check for valid game
+
+    # TODO if invalid, redirect to homepage with invalid id error
+
+    # TODO check for valid player, doesn't collide with existing player
+
+    # TODO if invalid, redirect to homepage with invalid player error
+
+    # TODO join game
+
+    return request.form
+
+
+# TODO game creation page
+@app.route('/create')
+def create_game():
+    return 'test'
 
 
 # ----------------------------------------------------------------------

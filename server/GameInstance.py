@@ -11,3 +11,5 @@ class GameInstance:
     def __init__(self, id: str):
         self.id = id
         self.last_action = time()
+
+        # TODO cache all logged in players
