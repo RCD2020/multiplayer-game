@@ -22,19 +22,10 @@ def index():
 
 
 # TODO change to argument in url
-@app.route('/game', methods=['POST'])
-def game():
-    # check validity of form
-    data = request.form
-    try:
-        id = data['game_id']
-    except:
-        return render_template(
-            'game_id.html', errors=['Something went wrong, try again']
-        )
-
+@app.route('/game<int:game_id>')
+def game(game_id):
     # get valid game
-    game = server.get_game(id)
+    game = server.get_game(game_id)
     if game == None:
         return render_template(
             'game_id.html', errors=['Game not found']
