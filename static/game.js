@@ -11,7 +11,3 @@ var socket = io.connect(url);
 socket.on('connect', function() {
     socket.emit('connect_server', game_id);
 });
-
-// socket.on('disconnect', function() {
-//     socket.emit('disconnect_server');
-// });
