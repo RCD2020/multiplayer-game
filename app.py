@@ -21,7 +21,6 @@ def index():
     return render_template('game_id.html', errors=[])
 
 
-# TODO change to argument in url
 @app.route('/game/<int:game_id>')
 def game(game_id):
     # get valid game
@@ -37,7 +36,7 @@ def game(game_id):
 
     # TODO join game
 
-    return request.form
+    return str(game)
 
 
 @app.route('/create')
@@ -51,9 +50,8 @@ def start_game():
     # start game
     id = server.create_game()
 
-    # TODO register user
-
-    # TODO redirect to game page
+    # redirect to game page
+    return redirect(f'/game/{id}')
 
 
 # ----------------------------------------------------------------------
