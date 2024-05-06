@@ -1,0 +1,19 @@
+<!--
+Robert Davis
+2024.05.06
+-->
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>{{ id }}</title>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
+        <script
+            src="{{ url_for('static', filename='game.js') }}" defer
+        ></script>
+    </head>
+    <body>
+        <h1>{{ id }}</h1>
+    </body>
+</html>

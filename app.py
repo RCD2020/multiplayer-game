@@ -21,7 +21,7 @@ def index():
     return render_template('game_id.html', errors=[])
 
 
-@app.route('/game/<int:game_id>')
+@app.route('/game/<game_id>')
 def game(game_id):
     # get valid game
     game = server.get_game(game_id)
@@ -36,7 +36,7 @@ def game(game_id):
 
     # TODO join game
 
-    return str(game)
+    return render_template('game.html', id=game_id)
 
 
 @app.route('/create')
