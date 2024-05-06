@@ -22,7 +22,7 @@ def index():
 
 
 # TODO change to argument in url
-@app.route('/game<int:game_id>')
+@app.route('/game/<int:game_id>')
 def game(game_id):
     # get valid game
     game = server.get_game(game_id)
