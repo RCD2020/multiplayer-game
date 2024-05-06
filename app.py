@@ -58,13 +58,26 @@ def start_game():
 # PRODUCTION SOCKETS
 # ----------------------------------------------------------------------
 # TODO handle identification of clients
-@socketio.on('connect')
-def handle_connect(data: dict):
+@socketio.on('connect_server')
+def handle_connect_server(game_id):
     'Authenticates each client'
     # TODO use request.sid to identify client
+    print(request.sid)
+    print(game_id)
 
     # TODO save to custom identifier as the sid changes everytime they
     # connect
+
+
+# TODO handle deregistration of connected user
+@socketio.on('disconnect')
+def handle_disconnect():
+    'Disconnects user from game'
+
+    # TODO get user sid
+    print(request.sid)
+
+    # TODO deregister sid from game instance
 
 
 # TODO handle sockets between server and client
