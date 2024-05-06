@@ -20,7 +20,7 @@ class ServerInstance:
         'Creates a new game and returns the id'
 
         # create id for game
-        id = self.new_game_id()
+        id = self._new_game_id()
 
         # create game instance
         new_game = GameInstance(id)
@@ -40,7 +40,7 @@ class ServerInstance:
         # TODO loop through games and destroy old games
 
     
-    def new_game_id(self) -> str:
+    def _new_game_id(self) -> str:
         '''
         Creates a new game id that doesn\'t collide with any other
         game instances

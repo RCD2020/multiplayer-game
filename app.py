@@ -6,7 +6,7 @@ Robert Davis
 from server.ServerInstance import ServerInstance
 
 from flask import Flask, render_template, redirect, request
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO, emit, join_room, leave_room
 
 app = Flask(__name__)
 socketio = SocketIO(app)
@@ -16,11 +16,12 @@ server = ServerInstance()
 # ----------------------------------------------------------------------
 # PRODUCTION LANDINGS
 # ----------------------------------------------------------------------
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
 def index():
     return render_template('game_id.html', errors=[])
 
 
+# TODO change to argument in url
 @app.route('/game', methods=['POST'])
 def game():
     # check validity of form
@@ -48,16 +49,16 @@ def game():
     return request.form
 
 
-# TODO game creation page
 @app.route('/create')
 def create_game():
     return render_template('create_game.html')
 
 
-@app.route('/start_game')
+@app.route('/start_game', methods=['POST'])
 def start_game():
     'Initializes a game and then joins it'
-    # TODO start game
+    # start game
+    id = server.create_game()
 
     # TODO register user
 
@@ -69,7 +70,7 @@ def start_game():
 # ----------------------------------------------------------------------
 # TODO handle identification of clients
 @socketio.on('connect')
-def handle_connect():
+def handle_connect(data: dict):
     'Authenticates each client'
     # TODO use request.sid to identify client
 
