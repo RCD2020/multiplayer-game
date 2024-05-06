@@ -27,6 +27,9 @@ Robert Davis
             var submit_button = document.getElementById('join_game');
 
             var url = window.location.href;
+            if (url.includes('game')) {
+                url = url.split('game')[0];
+            }
             url += 'game/';
 
             submit_button.onclick = function() {
