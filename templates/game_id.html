@@ -9,14 +9,16 @@ Robert Davis
         <title>Join Game</title>
     </head>
     <body>
+        <div id="errors">
+            {% for error in errors %}
+            <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+
         <h1>Join Game</h1>
         <form action="/game" method="post">
             <label for="game_id">Game ID:</label>
             <input type="text" name="game_id" id="game_id">
-            <input
-                type="hidden" name="game_action"
-                id="game_action" value="join"
-            >
             <input type="submit" value="Join">
         </form>
 

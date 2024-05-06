@@ -16,20 +16,28 @@ server = ServerInstance()
 # ----------------------------------------------------------------------
 # PRODUCTION LANDINGS
 # ----------------------------------------------------------------------
-@app.route('/')
-def join_game():
-    return render_template('game_id.html')
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    return render_template('game_id.html', errors=[])
 
 
 @app.route('/game', methods=['POST'])
 def game():
+    # check validity of form
     data = request.form
-    id = data['']
+    try:
+        id = data['game_id']
+    except:
+        return render_template(
+            'game_id.html', errors=['Something went wrong, try again']
+        )
 
     # get valid game
     game = server.get_game(id)
-
-    # TODO if invalid, redirect to homepage with invalid id error
+    if game == None:
+        return render_template(
+            'game_id.html', errors=['Game not found']
+        )
 
     # TODO check for valid player, doesn't collide with existing player
 

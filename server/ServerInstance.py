@@ -61,3 +61,12 @@ class ServerInstance:
 
         # return id
         return id
+    
+
+    def get_game(self, id: str) -> GameInstance:
+        'Gets the game with the matching id'
+
+        if id in self.games:
+            return self.games[id]
+        else:
+            return None
