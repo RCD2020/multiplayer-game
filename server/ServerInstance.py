@@ -70,12 +70,6 @@ class ServerInstance:
             return self.games[id]
         else:
             return None
-        
-
-    def add_user(self, game_id: str, sid: str):
-        'Registers a user to the GameInstance'
-
-        # TODO call GameInstance function to add new user
 
     
     def check_user(self, game_id: str, name: str) -> bool:
@@ -91,6 +85,12 @@ class ServerInstance:
         'Checks if the user has a sid registered in the GameInstance'
 
         # TODO check for sid in GameInstance
+
+
+    def add_user(self, game_id: str, sid: str):
+        'Registers a user to the GameInstance'
+
+        # TODO call GameInstance function to add new user
 
 
     def register_sid(self, game_id: str, name: str, sid: str):
