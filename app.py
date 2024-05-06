@@ -23,7 +23,11 @@ def join_game():
 
 @app.route('/game', methods=['POST'])
 def game():
-    # TODO check for valid game
+    data = request.form
+    id = data['']
+
+    # get valid game
+    game = server.get_game(id)
 
     # TODO if invalid, redirect to homepage with invalid id error
 
@@ -40,6 +44,16 @@ def game():
 @app.route('/create')
 def create_game():
     return render_template('create_game.html')
+
+
+@app.route('/start_game')
+def start_game():
+    'Initializes a game and then joins it'
+    # TODO start game
+
+    # TODO register user
+
+    # TODO redirect to game page
 
 
 # ----------------------------------------------------------------------
