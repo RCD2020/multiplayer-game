@@ -70,3 +70,36 @@ class ServerInstance:
             return self.games[id]
         else:
             return None
+        
+
+    def add_user(self, game_id: str, sid: str):
+        'Registers a user to the GameInstance'
+
+        # TODO call GameInstance function to add new user
+
+    
+    def check_user(self, game_id: str, name: str) -> bool:
+        '''
+        Checks for user with name in game_id in the GameInstance
+        Returns true or false if user exists
+        '''
+
+        # TODO check for users in instance
+
+    
+    def is_user_online(self, game_id: str, name: str) -> bool:
+        'Checks if the user has a sid registered in the GameInstance'
+
+        # TODO check for sid in GameInstance
+
+
+    def register_sid(self, game_id: str, name: str, sid: str):
+        'Updates socket id for user in GameInstance'
+
+        # TODO add sid to user
+    
+    
+    def deregister_sid(self, game_id: str, name: str):
+        'Deregisters associated socket id with user in GameInstance'
+
+        # TODO remove sid from user
