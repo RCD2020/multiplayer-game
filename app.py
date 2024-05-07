@@ -77,8 +77,15 @@ def handle_connect_server(data):
         emit('invalid_game')
         disconnect(sid)
 
-    # TODO save to custom identifier as the sid changes everytime they
-    # connect
+    # register user in ServerInstance and GameInstance
+    server.register_sid(game_id, username, sid)
+
+    # join room and send connect message
+    join_room(game_id)
+    socketio.emit('message', {'message': {
+        'user': 'system',
+        'message': f'{username} has joined the game'
+    }}, to=game_id)
 
 
 # TODO handle deregistration of connected user
