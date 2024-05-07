@@ -89,13 +89,6 @@ class ServerInstance:
         return self.games[game_id].is_logged_in(name)
 
 
-    def add_user(self, game_id: str, name: str, sid: str):
-        'Registers a user to the GameInstance'
-
-        # call GameInstance function to add new user
-        self.games[game_id].add_user(name, sid)
-
-
     def register_sid(self, game_id: str, name: str, sid: str):
         'Updates socket id for user in GameInstance'
 
