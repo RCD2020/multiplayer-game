@@ -59,11 +59,13 @@ def start_game():
 # ----------------------------------------------------------------------
 # TODO handle identification of clients
 @socketio.on('connect_server')
-def handle_connect_server(game_id):
+def handle_connect_server(data):
     'Authenticates each client'
     # TODO use request.sid to identify client
     print(request.sid)
-    print(game_id)
+    print(data)
+
+    # TODO validate correct username
 
     # TODO save to custom identifier as the sid changes everytime they
     # connect
