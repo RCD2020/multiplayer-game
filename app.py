@@ -6,7 +6,9 @@ Robert Davis
 from server.ServerInstance import ServerInstance
 
 from flask import Flask, render_template, redirect, request
-from flask_socketio import SocketIO, emit, join_room, leave_room
+from flask_socketio import (
+    SocketIO, emit, join_room, leave_room, disconnect
+)
 
 app = Flask(__name__)
 socketio = SocketIO(app)
@@ -61,11 +63,16 @@ def start_game():
 @socketio.on('connect_server')
 def handle_connect_server(data):
     'Authenticates each client'
-    # TODO use request.sid to identify client
-    print(request.sid)
-    print(data)
+    # use request.sid to identify client and get request data
+    sid = request.sid
+    username = data.get('username')
+    game_id = data.get('game_id')
 
-    # TODO validate correct username
+    # TODO validate request data
+    if not username:
+        emit('invalid_username')
+        disconnect(sid)
+    game = server.get_game(game_id)
 
     # TODO save to custom identifier as the sid changes everytime they
     # connect

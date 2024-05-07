@@ -23,7 +23,14 @@ function join_game() {
         socket.emit('connect_server', data);
     });
 
-    // TODO backend validation
+    // backend validation
+    socket.on('invalid_username', function() {
+        login_div.style.display = 'block';
+    });
+
+    socket.on('invalid_game', function() {
+        login_div.style.display = 'block';
+    });
 }
 
 // join game button
