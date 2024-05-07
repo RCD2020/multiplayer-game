@@ -11,5 +11,16 @@ class GameInstance:
     def __init__(self, id: str):
         self.id = id
         self.last_action = time()
+        self.users = {}
+    
 
-        # TODO cache all logged in players
+    def check_user(self, name: str) -> bool:
+        'Checks if there is a user with name'
+
+        return name in self.users
+    
+
+    def is_logged_in(self, name: str) -> bool:
+        'Checks if there is an associated socket id with name'
+
+        return True if self.users[name] else False

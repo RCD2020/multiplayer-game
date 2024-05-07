@@ -78,13 +78,13 @@ class ServerInstance:
         Returns true or false if user exists
         '''
 
-        # TODO check for users in instance
+        return self.games[game_id].check_user(name)
 
     
     def is_user_online(self, game_id: str, name: str) -> bool:
         'Checks if the user has a sid registered in the GameInstance'
 
-        # TODO check for sid in GameInstance
+        return self.games[game_id].is_logged_in(name)
 
 
     def add_user(self, game_id: str, sid: str):
