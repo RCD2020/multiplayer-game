@@ -72,20 +72,22 @@ def handle_connect_server(data):
     if not username:
         emit('invalid_username')
         disconnect(sid)
+        return
     game = server.get_game(game_id)
     if not game:
         emit('invalid_game')
         disconnect(sid)
+        return
 
     # register user in ServerInstance and GameInstance
     server.register_sid(game_id, username, sid)
 
     # join room and send connect message
     join_room(game_id)
-    socketio.emit('message', {'message': {
+    socketio.emit('message', {
         'user': 'system',
         'message': f'{username} has joined the game'
-    }}, to=game_id)
+    }, to=game_id)
 
 
 # TODO handle deregistration of connected user

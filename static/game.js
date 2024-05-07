@@ -6,6 +6,8 @@ var login_div = document.getElementById('login');
 var username = document.getElementById('username');
 var join_button = document.getElementById('join');
 
+var messages = document.getElementById('messages');
+
 // connects to socket
 function join_game() {
     var url = window.location.href;
@@ -17,7 +19,7 @@ function join_game() {
     socket.on('connect', function() {
         var data = {
             'game_id': game_id,
-            'username': username
+            'username': username.value
         };
 
         socket.emit('connect_server', data);
@@ -30,6 +32,15 @@ function join_game() {
 
     socket.on('invalid_game', function() {
         login_div.style.display = 'block';
+    });
+
+    socket.on('message', function(data) {
+        var message = document.createElement('p');
+        message.innerText += data['user'];
+        message.innerText += ': ';
+        message.innerText += data['message'];
+
+        messages.appendChild(message);
     });
 }
 
