@@ -32,12 +32,6 @@ def game(game_id):
             'game_id.html', errors=['Game not found']
         )
 
-    # TODO check for valid player, doesn't collide with existing player
-
-    # TODO if invalid, redirect to homepage with invalid player error
-
-    # TODO join game
-
     return render_template('game.html', id=game_id)
 
 
