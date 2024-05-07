@@ -24,3 +24,9 @@ class GameInstance:
         'Checks if there is an associated socket id with name'
 
         return True if self.users[name] else False
+    
+
+    def add_user(self, name: str, sid: str):
+        'Adds a user associated with a socket'
+
+        self.users[name] = sid

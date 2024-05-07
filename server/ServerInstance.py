@@ -5,12 +5,14 @@ Robert Davis
 
 from server.GameInstance import GameInstance
 
+from typing import Dict
+
 from random import choice
 from time import time
 
 
 class ServerInstance:
-    games = {}
+    games: Dict[str, GameInstance] = {}
 
     def __init__(self):
         'TODO initialization'
@@ -87,10 +89,11 @@ class ServerInstance:
         return self.games[game_id].is_logged_in(name)
 
 
-    def add_user(self, game_id: str, sid: str):
+    def add_user(self, game_id: str, name: str, sid: str):
         'Registers a user to the GameInstance'
 
-        # TODO call GameInstance function to add new user
+        # call GameInstance function to add new user
+        self.games[game_id].add_user(name, sid)
 
 
     def register_sid(self, game_id: str, name: str, sid: str):
