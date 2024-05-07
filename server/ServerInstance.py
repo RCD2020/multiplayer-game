@@ -76,15 +76,6 @@ class ServerInstance:
             return None
 
     
-    def check_user(self, game_id: str, name: str) -> bool:
-        '''
-        Checks for user with name in game_id in the GameInstance
-        Returns true or false if user exists
-        '''
-
-        return self.games[game_id].check_user(name)
-
-    
     def is_user_online(self, game_id: str, name: str) -> bool:
         'Checks if the user has a sid registered in the GameInstance'
 
