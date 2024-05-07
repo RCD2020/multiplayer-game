@@ -99,10 +99,12 @@ class ServerInstance:
     def register_sid(self, game_id: str, name: str, sid: str):
         'Updates socket id for user in GameInstance'
 
-        # TODO add sid to user
+        # add sid to user
+        self.games[game_id].register_sid(name, sid)
     
     
     def deregister_sid(self, game_id: str, name: str):
         'Deregisters associated socket id with user in GameInstance'
 
-        # TODO remove sid from user
+        # remove sid from user
+        self.games[game_id].deregister_sid(name)

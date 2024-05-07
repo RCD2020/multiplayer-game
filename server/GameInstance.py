@@ -30,3 +30,15 @@ class GameInstance:
         'Adds a user associated with a socket'
 
         self.users[name] = sid
+
+
+    def register_sid(self, name: str, sid: str):
+        'Associates a user with a socket id'
+
+        self.users[name] = sid
+
+
+    def deregister_sid(self, name: str):
+        'Unassociates a user with a socket id'
+
+        self.users[name] = None
