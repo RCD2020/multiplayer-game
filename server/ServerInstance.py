@@ -12,10 +12,12 @@ from time import time
 
 
 class ServerInstance:
-    games: Dict[str, GameInstance] = {}
 
     def __init__(self):
-        'TODO initialization'
+        'initialization'
+
+        self.games: Dict[str, GameInstance] = {}
+        self.sockets: Dict[str, str] = {}
 
 
     def create_game(self) -> str:
