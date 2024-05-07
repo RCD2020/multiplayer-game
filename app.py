@@ -68,11 +68,14 @@ def handle_connect_server(data):
     username = data.get('username')
     game_id = data.get('game_id')
 
-    # TODO validate request data
+    # validate request data
     if not username:
         emit('invalid_username')
         disconnect(sid)
     game = server.get_game(game_id)
+    if not game:
+        emit('invalid_game')
+        disconnect(sid)
 
     # TODO save to custom identifier as the sid changes everytime they
     # connect
