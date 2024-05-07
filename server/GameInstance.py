@@ -29,8 +29,6 @@ class GameInstance:
     def register_sid(self, name: str, sid: str):
         'Associates a user with a socket id'
 
-        print(name)
-        print(type(name))
         self.users[name] = sid
 
 

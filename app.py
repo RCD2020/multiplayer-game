@@ -96,7 +96,6 @@ def handle_disconnect():
     'Disconnects user from game'
 
     # TODO get user sid
-    print(request.sid)
 
     # TODO deregister sid from game instance
 
