@@ -36,3 +36,5 @@ class GameInstance:
         'Unassociates a user with a socket id'
 
         self.users[name] = None
+
+# Perhaps this can all be contained in the server class
