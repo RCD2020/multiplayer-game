@@ -26,10 +26,16 @@ class GameInstance:
         return True if self.users[name] else False
 
 
-    def register_sid(self, name: str, sid: str):
-        'Associates a user with a socket id'
+    def register_sid(self, name: str, sid: str) -> bool:
+        '''
+        Associates a user with a socket id. Returns false if there is a
+        socket id collision
+        '''
 
+        if self.users.get(name):
+            return False
         self.users[name] = sid
+        return True
 
 
     def deregister_sid(self, name: str):

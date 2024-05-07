@@ -63,6 +63,7 @@ def handle_connect_server(data):
     game_id = data.get('game_id')
 
     # validate request data
+    # TODO all emits should go to same channel to cutdown on client code
     if not username:
         emit('invalid_username')
         disconnect(sid)
@@ -74,7 +75,10 @@ def handle_connect_server(data):
         return
 
     # register user in ServerInstance and GameInstance
-    server.register_sid(game_id, username, sid)
+    if not server.register_sid(game_id, username, sid):
+        emit('username_taken')
+        disconnect(sid)
+        return
 
     # join room and send connect message
     join_room(game_id)

@@ -26,11 +26,17 @@ function join_game() {
     });
 
     // backend validation
+    // TODO clean up, put to one function
+    // TODO error messages
     socket.on('invalid_username', function() {
         login_div.style.display = 'block';
     });
 
     socket.on('invalid_game', function() {
+        login_div.style.display = 'block';
+    });
+
+    socket.on('username_taken', function() {
         login_div.style.display = 'block';
     });
 

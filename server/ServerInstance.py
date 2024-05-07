@@ -82,12 +82,17 @@ class ServerInstance:
         return self.games[game_id].is_logged_in(name)
 
 
-    def register_sid(self, game_id: str, name: str, sid: str):
-        'Updates socket id for user in GameInstance'
+    def register_sid(self, game_id: str, name: str, sid: str) -> bool:
+        '''
+        Updates socket id for user in GameInstance and self.sockets,
+        Will return False if socket id is already registered.
+        '''
 
         # add sid to user
-        self.games[game_id].register_sid(name, sid)
+        if not self.games[game_id].register_sid(name, sid):
+            return False
         self.sockets[sid] = game_id
+        return True
     
     
     def deregister_sid(self, sid: str, name: str):
