@@ -40,6 +40,7 @@ class GameInstance:
             return False
         self.users[name] = sid
         self.sockets[sid] = name
+        self.last_action = time()
         return True
 
 
@@ -66,6 +67,7 @@ class GameInstance:
 
         # send processed data to self.updates
         self.updates.append(data)
+        self.last_action = time()
 
 
     def get_update_data(self) -> List[dict]:
