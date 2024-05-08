@@ -62,7 +62,7 @@ def handle_connect_server(data):
     game_id = data.get('game_id')
 
     # validate request data
-    # TODO all emits should go to same channel to cutdown on client code
+    # all emits should go to same channel to cutdown on client code
     if not username:
         emit('login_error', 'Invalid Username')
         disconnect(sid)
