@@ -120,7 +120,7 @@ def handle_data(data: dict):
         elif update['address'] == 'room':
             emit('update', update, to=game_id)
         elif update['address'] == 'user':
-            pass
+            emit('update', update, to=update['target'])
 
 
 # ----------------------------------------------------------------------
