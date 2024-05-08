@@ -39,6 +39,10 @@ function join_game() {
         errors.appendChild(error);
     })
 
+    socket.on('update', function(data) {
+        // handle update data
+    });
+
     socket.on('message', function(data) {
         var message = document.createElement('p');
         message.innerText += data['user'];

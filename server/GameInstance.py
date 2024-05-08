@@ -57,7 +57,7 @@ class GameInstance:
         # TODO return server data
 
     
-    def take_info(self, sid: str, data):
+    def send_data(self, sid: str, data):
         'Processes data from the client'
 
         # TODO process data

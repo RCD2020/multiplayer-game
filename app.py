@@ -77,7 +77,7 @@ def handle_connect_server(data):
         disconnect(sid)
         return
     
-    # TODO send game initialization data
+    # send game initialization data
     server_data = game.get_server_data()
     emit('initialization', server_data)
 
@@ -107,13 +107,20 @@ def handle_data(data: dict):
     game_id = server.lookup_sid(sid)
     game = server.get_game(game_id)
 
-    # TODO send data to GameInstance
+    # send data to GameInstance
+    game.send_data(sid, data)
 
-    # TODO grab updates
+    # grab updates
+    updates = game.get_update_data()
 
     # TODO emit data to appropriate channels
-
-    socketio.emit('client_data', data, to=game_id)
+    for update in updates:
+        if update['address'] == 'self':
+            emit('update', update)
+        elif update['address'] == 'room':
+            emit('update', update, to=game_id)
+        elif update['address'] == 'user':
+            pass
 
 
 # ----------------------------------------------------------------------
