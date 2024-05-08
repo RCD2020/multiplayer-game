@@ -46,5 +46,3 @@ class GameInstance:
         name = self.sockets[sid]
         self.users[name] = None
         del self.sockets[sid]
-
-# Perhaps this can all be contained in the server class
