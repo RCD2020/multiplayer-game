@@ -108,7 +108,8 @@ def handle_data(data: dict):
     game = server.get_game(game_id)
 
     # send data to GameInstance
-    game.send_data(sid, data)
+    error = game.send_data(sid, data)
+    emit('game_error', error)
 
     # grab updates
     updates = game.get_update_data()
