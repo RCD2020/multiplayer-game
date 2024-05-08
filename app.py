@@ -76,6 +76,8 @@ def handle_connect_server(data):
         emit('login_error', 'Username Taken')
         disconnect(sid)
         return
+    
+    # TODO send game initialization data
 
     # join room and send connect message
     join_room(game_id)
@@ -92,7 +94,7 @@ def handle_disconnect():
     # get user sid
     sid = request.sid
 
-    # TODO deregister sid from game instance
+    # deregister sid from game instance
     server.deregister_sid(sid)
 
 
@@ -101,6 +103,14 @@ def handle_disconnect():
 def handle_data(data: dict):
     sid = request.sid
     game_id = server.lookup_sid(sid)
+    game = server.get_game(game_id)
+
+    # TODO send data to GameInstance
+
+    # TODO grab updates
+
+    # TODO emit data to appropriate channels
+
     socketio.emit('client_data', data, to=game_id)
 
 

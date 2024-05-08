@@ -3,6 +3,7 @@ Robert Davis
 2024.05.05
 '''
 
+from typing import List
 from time import time
 
 
@@ -13,6 +14,8 @@ class GameInstance:
         self.last_action = time()
         self.users = {}
         self.sockets = {}
+        self.updates = []
+        self.server_data = {}
     
 
     def check_user(self, name: str) -> bool:
@@ -46,3 +49,27 @@ class GameInstance:
         name = self.sockets[sid]
         self.users[name] = None
         del self.sockets[sid]
+
+
+    def get_server_data(self) -> dict:
+        'Grabs all existing server data to initialize client side'
+
+        # TODO return server data
+
+    
+    def take_info(self, sid: str, data):
+        'Processes data from the client'
+
+        # TODO process data
+
+        # TODO send processed data to self.updates
+
+
+    def get_update_data(self) -> List[dict]:
+        'Grabs all the new server updates to send out'
+
+        # TODO grab update data
+
+        # TODO clear update data
+
+        # TODO return update data
