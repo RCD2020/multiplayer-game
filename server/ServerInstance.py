@@ -95,10 +95,10 @@ class ServerInstance:
         return True
     
     
-    def deregister_sid(self, sid: str, name: str):
+    def deregister_sid(self, sid: str):
         'Deregisters associated socket id with user in GameInstance'
 
         # remove sid from user
         game_id = self.sockets[sid]
-        self.games[game_id].deregister_sid(name)
+        self.games[game_id].deregister_sid(sid)
         del self.sockets[sid]

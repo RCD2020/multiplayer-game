@@ -12,6 +12,7 @@ class GameInstance:
         self.id = id
         self.last_action = time()
         self.users = {}
+        self.sockets = {}
     
 
     def check_user(self, name: str) -> bool:
@@ -35,12 +36,15 @@ class GameInstance:
         if self.users.get(name):
             return False
         self.users[name] = sid
+        self.sockets[sid] = name
         return True
 
 
-    def deregister_sid(self, name: str):
+    def deregister_sid(self, sid: str):
         'Unassociates a user with a socket id'
 
+        name = self.sockets[sid]
         self.users[name] = None
+        del self.sockets[sid]
 
 # Perhaps this can all be contained in the server class

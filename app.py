@@ -93,9 +93,11 @@ def handle_connect_server(data):
 def handle_disconnect():
     'Disconnects user from game'
 
-    # TODO get user sid
+    # get user sid
+    sid = request.sid
 
     # TODO deregister sid from game instance
+    server.deregister_sid(sid)
 
 
 # TODO handle sockets between server and client
