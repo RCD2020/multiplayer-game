@@ -39,7 +39,8 @@ class ChatRoom(GameInstance):
             
             out_data['target'] = []
             for recipient in target:
-                out_data['target'].append(self.users[recipient])
+                if self.users[recipient]:
+                    out_data['target'].append(self.users[recipient])
 
     
     def get_update_data(self) -> List[dict]:
