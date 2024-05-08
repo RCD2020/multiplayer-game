@@ -37,7 +37,11 @@ function join_game() {
         var error = document.createElement('p');
         error.innerText = message;
         errors.appendChild(error);
-    })
+    });
+
+    socket.on('game_error', function(error) {
+        // implement error handling
+    });
 
     socket.on('update', function(data) {
         // handle update data
