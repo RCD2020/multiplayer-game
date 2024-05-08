@@ -101,7 +101,9 @@ def handle_disconnect():
 # TODO handle sockets between server and client
 @socketio.on('server_data')
 def handle_data(data: dict):
-    socketio.emit('client_data', data)
+    sid = request.sid
+    game_id = server.lookup_sid(sid)
+    socketio.emit('client_data', data, to=game_id)
 
 
 # ----------------------------------------------------------------------

@@ -74,6 +74,12 @@ class ServerInstance:
             return self.games[id]
         else:
             return None
+        
+
+    def lookup_sid(self, sid: str) -> str:
+        'Gets the game id based off the associated socket id'
+
+        return self.sockets.get(sid)
 
     
     def is_user_online(self, game_id: str, name: str) -> bool:
