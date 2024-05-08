@@ -59,7 +59,7 @@ class GameInstance:
         return self.server_data
 
     
-    def send_data(self, sid: str, data):
+    def send_data(self, sid: str, data) -> str:
         'Processes data from the client'
 
         # process data
@@ -68,6 +68,10 @@ class GameInstance:
         # send processed data to self.updates
         self.updates.append(data)
         self.last_action = time()
+
+        # if the data was invalid, return an error,
+        # otherwise return None
+        return None
 
 
     def get_update_data(self) -> List[dict]:

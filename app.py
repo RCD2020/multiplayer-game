@@ -115,12 +115,11 @@ def handle_data(data: dict):
 
     # emit data to appropriate channels
     for update in updates:
-        if update['address'] == 'self':
-            emit('update', update)
-        elif update['address'] == 'room':
+        if update['address'] == 'room':
             emit('update', update, to=game_id)
         elif update['address'] == 'user':
-            emit('update', update, to=update['target'])
+            for user in update['target']:
+                emit('update', update, to=user)
 
 
 # ----------------------------------------------------------------------
