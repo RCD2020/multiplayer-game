@@ -1,6 +1,14 @@
 // Robert Davis
 // 2024.05.08
 
+// clear error function
+function setRemoval(id, ms) {
+    setTimeout(function() {
+        var element = document.getElementById(id);
+        element.remove();
+    }, ms);
+}
+
 // elements
 var login_div = document.getElementById('login');
 var username = document.getElementById('username');
@@ -37,10 +45,15 @@ function join_game() {
         var error = document.createElement('p');
         error.innerText = message;
         errors.appendChild(error);
-    })
+    });
 
     socket.on('game_error', function(error) {
         // implement error handling
+        var error_message = document.createElement('p');
+        error_message.innerText = error;
+        var err_id = 'err_' + Math.random().toString(16).slice(2);
+        errors.prepend(error_message);
+        setRemoval(err_id, 10000);
     });
 
     socket.on('update', function(data) {
