@@ -53,7 +53,6 @@ def start_game():
 # ----------------------------------------------------------------------
 # PRODUCTION SOCKETS
 # ----------------------------------------------------------------------
-# TODO handle identification of clients
 @socketio.on('connect_server')
 def handle_connect_server(data):
     'Authenticates each client'
@@ -65,18 +64,18 @@ def handle_connect_server(data):
     # validate request data
     # TODO all emits should go to same channel to cutdown on client code
     if not username:
-        emit('invalid_username')
+        emit('login_error', 'Invalid Username')
         disconnect(sid)
         return
     game = server.get_game(game_id)
     if not game:
-        emit('invalid_game')
+        emit('login_error', 'Invalid Game')
         disconnect(sid)
         return
 
     # register user in ServerInstance and GameInstance
     if not server.register_sid(game_id, username, sid):
-        emit('username_taken')
+        emit('login_error', 'Username Taken')
         disconnect(sid)
         return
 
@@ -88,7 +87,6 @@ def handle_connect_server(data):
     }, to=game_id)
 
 
-# TODO handle deregistration of connected user
 @socketio.on('disconnect')
 def handle_disconnect():
     'Disconnects user from game'

@@ -6,6 +6,7 @@ var login_div = document.getElementById('login');
 var username = document.getElementById('username');
 var join_button = document.getElementById('join');
 
+var errors = document.getElementById('errors');
 var messages = document.getElementById('messages');
 
 // connects to socket
@@ -22,23 +23,17 @@ function join_game() {
             'username': username.value
         };
 
+        errors.innerHTML = '';
         socket.emit('connect_server', data);
     });
 
     // backend validation
-    // TODO clean up, put to one function
-    // TODO error messages
-    socket.on('invalid_username', function() {
+    socket.on('login_error', function(message) {
         login_div.style.display = 'block';
-    });
-
-    socket.on('invalid_game', function() {
-        login_div.style.display = 'block';
-    });
-
-    socket.on('username_taken', function() {
-        login_div.style.display = 'block';
-    });
+        var error = document.createElement('p');
+        error.innerText = message;
+        errors.appendChild(error);
+    })
 
     socket.on('message', function(data) {
         var message = document.createElement('p');
