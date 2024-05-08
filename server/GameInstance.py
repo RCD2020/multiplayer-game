@@ -54,22 +54,28 @@ class GameInstance:
     def get_server_data(self) -> dict:
         'Grabs all existing server data to initialize client side'
 
-        # TODO return server data
+        # return server data
+        return self.server_data
 
     
     def send_data(self, sid: str, data):
         'Processes data from the client'
 
-        # TODO process data
+        # process data
+        # this would be more processed in an actual game instance
 
-        # TODO send processed data to self.updates
+        # send processed data to self.updates
+        self.updates.append(data)
 
 
     def get_update_data(self) -> List[dict]:
         'Grabs all the new server updates to send out'
 
-        # TODO grab update data
+        # grab update data
+        updates = self.updates
 
-        # TODO clear update data
+        # clear update data
+        self.update = {}
 
-        # TODO return update data
+        # return update data
+        return updates

@@ -113,7 +113,7 @@ def handle_data(data: dict):
     # grab updates
     updates = game.get_update_data()
 
-    # TODO emit data to appropriate channels
+    # emit data to appropriate channels
     for update in updates:
         if update['address'] == 'self':
             emit('update', update)
