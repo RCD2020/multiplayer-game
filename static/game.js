@@ -27,6 +27,10 @@ function join_game() {
         socket.emit('connect_server', data);
     });
 
+    socket.on('initialization', function(server_data) {
+        // initialization data here
+    });
+
     // backend validation
     socket.on('login_error', function(message) {
         login_div.style.display = 'block';

@@ -78,6 +78,8 @@ def handle_connect_server(data):
         return
     
     # TODO send game initialization data
+    server_data = game.get_server_data()
+    emit('initialization', server_data)
 
     # join room and send connect message
     join_room(game_id)
