@@ -6,9 +6,7 @@ Robert Davis
 from server.ServerInstance import ServerInstance
 
 from flask import Flask, render_template, redirect, request
-from flask_socketio import (
-    SocketIO, emit, join_room, leave_room, disconnect
-)
+from flask_socketio import SocketIO, emit, join_room, disconnect
 
 app = Flask(__name__)
 socketio = SocketIO(app)
