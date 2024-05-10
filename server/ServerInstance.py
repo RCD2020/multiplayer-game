@@ -4,6 +4,7 @@ Robert Davis
 '''
 
 from server.GameInstance import GameInstance
+from server.ChatRoom import ChatRoom
 
 from typing import Dict
 
@@ -27,7 +28,7 @@ class ServerInstance:
         id = self._new_game_id()
 
         # create game instance
-        new_game = GameInstance(id)
+        new_game = ChatRoom(id)
 
         # add game instance to games
         self.games[id] = new_game

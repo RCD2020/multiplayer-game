@@ -14,8 +14,11 @@ var login_div = document.getElementById('login');
 var username = document.getElementById('username');
 var join_button = document.getElementById('join');
 
-var errors = document.getElementById('errors');
+var content = document.getElementById('content');
 var messages = document.getElementById('messages');
+
+var errors = document.getElementById('errors');
+var message_field = document.getElementById('message_field');
 
 // connects to socket
 function join_game() {
@@ -36,7 +39,20 @@ function join_game() {
     });
 
     socket.on('initialization', function(server_data) {
-        // initialization data here
+        content.removeAttribute('hidden');
+        
+        message_field.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                message = message_field.value;
+                message_field.value = '';
+                var data = {
+                    'message': message,
+                    'address': 'room'
+                };
+                socket.emit('server_data', data);
+            }
+        });
     });
 
     // backend validation
@@ -52,22 +68,18 @@ function join_game() {
         var error_message = document.createElement('p');
         error_message.innerText = error;
         var err_id = 'err_' + Math.random().toString(16).slice(2);
+        error_message.id = err_id;
         errors.prepend(error_message);
         setRemoval(err_id, 10000);
     });
 
     socket.on('update', function(data) {
         // handle update data
+        var message = document.createElement('p')
+        message.innerText = data['user'] + ': ' + data['message'];
+        messages.append(message);
     });
 
-    socket.on('message', function(data) {
-        var message = document.createElement('p');
-        message.innerText += data['user'];
-        message.innerText += ': ';
-        message.innerText += data['message'];
-
-        messages.appendChild(message);
-    });
 }
 
 // join game button

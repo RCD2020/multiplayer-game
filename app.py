@@ -30,7 +30,7 @@ def game(game_id):
             'game_id.html', errors=['Game not found']
         )
 
-    return render_template('game.html', id=game_id)
+    return render_template('ChatRoom.html', id=game_id)
 
 
 @app.route('/create')
@@ -109,12 +109,14 @@ def handle_data(data: dict):
 
     # send data to GameInstance
     error = game.send_data(sid, data)
-    emit('game_error', error)
+    if error:
+        emit('game_error', error)
 
     # grab updates
     updates = game.get_update_data()
 
     # emit data to appropriate channels
+    # TODO remove address in message sent out
     for update in updates:
         if update['address'] == 'room':
             emit('update', update, to=game_id)

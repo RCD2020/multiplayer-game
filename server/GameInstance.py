@@ -81,7 +81,7 @@ class GameInstance:
         updates = self.updates
 
         # clear update data
-        self.update = {}
+        self.updates = []
 
         # return update data
         return updates

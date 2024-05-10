@@ -17,7 +17,7 @@ class ChatRoom(GameInstance):
         'Proccesses chat messages from the client'
 
         # verify correctly formatted
-        user = data.get('user')
+        user = self.sockets[sid]
         message = data.get('message')
         address = data.get('address')
         if not user or message == None or not address:
@@ -29,6 +29,7 @@ class ChatRoom(GameInstance):
 
         # add to updates
         out_data = {
+            'user': user,
             'message': message,
             'address': address
         }
@@ -41,6 +42,8 @@ class ChatRoom(GameInstance):
             for recipient in target:
                 if self.users[recipient]:
                     out_data['target'].append(self.users[recipient])
+
+        self.updates.append(out_data)
 
     
     def get_update_data(self) -> List[dict]:

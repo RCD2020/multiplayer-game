@@ -10,7 +10,7 @@ Robert Davis
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
         <script
-            src="{{ url_for('static', filename='game.js') }}" defer
+            src="{{ url_for('static', filename='ChatRoom.js') }}" defer
         ></script>
     </head>
     <body>
@@ -24,6 +24,9 @@ Robert Davis
             <button id="join">Join</button>
         </div>
 
-        <div id="messages"></div>
+        <div id="content" hidden>
+            <div id="messages"></div>
+            <input type="text" id="message_field">
+        </div>
     </body>
 </html>
