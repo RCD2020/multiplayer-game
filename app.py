@@ -35,14 +35,16 @@ def game(game_id):
 
 @app.route('/create')
 def create_game():
-    return render_template('create_game.html')
+    return render_template('create_game.html', game_types=ServerInstance.GAME_TYPES)
 
 
 @app.route('/start_game', methods=['POST'])
 def start_game():
     'Initializes a game and then joins it'
+
+    game_type = request.form['game_type']
     # start game
-    id = server.create_game()
+    id = server.create_game(game_type)
 
     # redirect to game page
     return redirect(f'/game/{id}')

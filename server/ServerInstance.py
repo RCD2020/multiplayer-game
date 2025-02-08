@@ -4,7 +4,8 @@ Robert Davis
 '''
 
 from server.GameInstance import GameInstance
-from server.ChatRoom import ChatRoom
+from server.games.ChatRoom import ChatRoom
+from server.games.GuessWho import GuessWho
 
 from typing import Dict
 
@@ -13,6 +14,10 @@ from time import time
 
 
 class ServerInstance:
+    GAME_TYPES = {
+        'Chat Room': ChatRoom,
+        'Guess Who': GuessWho
+    }
 
     def __init__(self):
         'initialization'
@@ -21,14 +26,14 @@ class ServerInstance:
         self.sockets: Dict[str, str] = {}
 
 
-    def create_game(self) -> str:
+    def create_game(self, game_type, settings=None) -> str:
         'Creates a new game and returns the id'
 
         # create id for game
         id = self._new_game_id()
 
         # create game instance
-        new_game = ChatRoom(id)
+        new_game = self.GAME_TYPES[game_type](id, settings)
 
         # add game instance to games
         self.games[id] = new_game

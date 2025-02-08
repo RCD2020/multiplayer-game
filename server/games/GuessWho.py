@@ -1,16 +1,16 @@
 '''
 Robert Davis
-2024.05.08
+2025.02.08
 '''
 
 from typing import List
 from server.GameInstance import GameInstance
 
 
-class ChatRoom(GameInstance):
+class GuessWho(GameInstance):
 
-    def __init__(self, id: str):
-        super().__init__(id)
+    def __init__(self, id: str, settings: str):
+        super().__init__(id, settings)
 
     
     def send_data(self, sid: str, data: dict):

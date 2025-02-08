@@ -13,6 +13,11 @@ Robert Davis
         <h1>Create New Game</h1>
 
         <form action="/start_game" method="post">
+            <select name="game_type" id="game_type">
+                {% for game_type in game_types %}
+                <option value="{{ game_type }}">{{ game_type }}</option>
+                {% endfor %}
+            </select>
             <input type="submit" value="Create Game">
         </form>
     </body>
