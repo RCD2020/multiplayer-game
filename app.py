@@ -30,7 +30,7 @@ def game(game_id):
             'game_id.html', errors=['Game not found']
         )
 
-    return render_template('ChatRoom.html', id=game_id)
+    return render_template(game.template, id=game_id)
 
 
 @app.route('/create')
@@ -146,4 +146,4 @@ def handle_send_server(json):
 
 
 if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0', port='42069', debug=True)
+    socketio.run(app, host='0.0.0.0', debug=True)
