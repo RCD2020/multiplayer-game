@@ -93,3 +93,11 @@ join_button.onclick = function() {
     login_div.style.display = 'None';
     join_game();
 };
+
+// joins game when enter is pressed
+username.addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        join_button.click();
+    }
+});
