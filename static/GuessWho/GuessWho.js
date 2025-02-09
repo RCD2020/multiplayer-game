@@ -76,8 +76,11 @@ function join_game() {
     socket.on('update', function(data) {
         // handle update data
         var message = document.createElement('p')
-        message.innerText = data['user'] + ': ' + data['message'];
-        messages.append(message);
+        // message.innerText = data['user'] + ': ' + data['message'];
+        // made it so you can insert HTML for funzies
+        // TODO: should probably remove this later
+        message.innerHTML = data['user'] + ': ' + data['message'];
+        messages.prepend(message);
     });
 
 }
