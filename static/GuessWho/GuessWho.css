@@ -1,0 +1,24 @@
+#left {
+    width: 80%;
+}
+
+#right {
+    width: 20%;
+    background-color: aliceblue;
+    position: fixed;
+    height: 100%;
+    overflow-y: scroll;
+
+    right: 0;
+    overflow-x: hidden;
+
+    overflow-wrap: break-word;
+}
+
+#right::-webkit-scrollbar {
+    display: none;
+}
+
+#message_field {
+    width: 98%;
+}

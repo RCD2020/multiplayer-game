@@ -12,6 +12,7 @@ Robert Davis
         <script
             src="{{ url_for('static', filename='GuessWho/GuessWho.js') }}" defer
         ></script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='GuessWho/GuessWho.css') }}">
     </head>
     <body>
         <h1>{{ id }}</h1>
@@ -25,8 +26,14 @@ Robert Davis
         </div>
 
         <div id="content" hidden>
-            <input type="text" id="message_field">
-            <div id="messages"></div>
+            <div id="left">
+
+            </div>
+
+            <div id="right">
+                <input type="text" id="message_field">
+                <div id="messages"></div>
+            </div>
         </div>
     </body>
 </html>
