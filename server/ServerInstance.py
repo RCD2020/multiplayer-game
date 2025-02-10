@@ -6,6 +6,7 @@ Robert Davis
 from server.GameInstance import GameInstance
 from server.games.ChatRoom import ChatRoom
 from server.games.GuessWho import GuessWho
+from server.games.Clue     import Clue
 
 from typing import Dict
 
@@ -16,6 +17,7 @@ from time import time
 class ServerInstance:
     GAME_TYPES = {
         'Chat Room': ChatRoom,
+        'Clue'     : Clue,
         'Guess Who': GuessWho
     }
 
