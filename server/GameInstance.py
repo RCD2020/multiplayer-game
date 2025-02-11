@@ -9,10 +9,11 @@ from time import time
 
 class GameInstance:
 
-    def __init__(self, id: str, settings: str, template: str):
+    def __init__(self, id: str, settings: str, template: str, max_players: int):
         self.id = id
         self.settings = settings
         self.template = template
+        self.max_players = max_players
         self.last_action = time()
         self.users = {}
         self.sockets = {}

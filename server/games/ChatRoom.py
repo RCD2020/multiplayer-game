@@ -11,7 +11,7 @@ class ChatRoom(GameInstance):
 
 
     def __init__(self, id: str, settings: str):
-        super().__init__(id, settings, 'ChatRoom.html')
+        super().__init__(id, settings, 'ChatRoom.html', 10)
 
     
     def send_data(self, sid: str, data: dict):
