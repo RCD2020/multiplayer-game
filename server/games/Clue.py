@@ -1,9 +1,11 @@
 '''
 Robert Davis
-2025.02.08
+2025.02.10
 '''
 
 from typing import List
+from time import time
+
 from server.GameInstance import GameInstance
 
 
@@ -12,9 +14,17 @@ class Clue(GameInstance):
     def __init__(self, id: str, settings: str):
         super().__init__(id, settings, 'games/Clue/Clue.html', 6)
 
+        self.main_players = set()
+
+        # Game States
+        #    0: Waiting for players
+        self.game_state = 0
+
     
     def send_data(self, sid: str, data: dict):
         'Proccesses chat messages from the client'
+
+        print(sid, data)
 
         # verify correctly formatted
         user = self.sockets[sid]
@@ -48,4 +58,24 @@ class Clue(GameInstance):
     
     def get_update_data(self) -> List[dict]:
         return super().get_update_data()
+    
+
+    def register_sid(self, name, sid):
+        '''
+        Associates a user with a socket id. Returns false if there is a
+        socket id collision
+        '''
+
+        if self.users.get(name):
+            return False
+        self.users[name] = sid
+        self.sockets[sid] = name
+        self.last_action = time()
+
+        # if max players has not been reached and game is not in session,
+        #    then add user to main players
+        if not self.game_state and len(self.main_players) < self.max_players:
+            self.main_players.add(name)
+
+        return True
     
