@@ -10,7 +10,7 @@ from server.GameInstance import GameInstance
 class Clue(GameInstance):
 
     def __init__(self, id: str, settings: str):
-        super().__init__(id, settings, 'games/GuessWho/GuessWho.html', 6)
+        super().__init__(id, settings, 'games/Clue/Clue.html', 6)
 
     
     def send_data(self, sid: str, data: dict):
