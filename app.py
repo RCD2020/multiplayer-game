@@ -112,6 +112,7 @@ def handle_data(data: dict):
     # send data to GameInstance
     error = game.send_data(sid, data)
     if error:
+        print(error, data)
         emit('game_error', error)
 
     # grab updates

@@ -47,6 +47,7 @@ function join_game() {
                 message = message_field.value;
                 message_field.value = '';
                 var data = {
+                    'type': 'message',
                     'message': message,
                     'address': 'room'
                 };
