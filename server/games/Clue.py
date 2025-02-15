@@ -46,6 +46,8 @@ class Clue(GameInstance):
         user = self.sockets[sid]
         if user not in self.users:
             return 'Invalid User'
+        if not self.is_main_player(sid):
+            return 'User is Spectator'
         
 
         # verify correctly formatted
