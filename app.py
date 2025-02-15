@@ -80,7 +80,7 @@ def handle_connect_server(data):
         return
     
     # send game initialization data
-    server_data = game.get_server_data()
+    server_data = game.get_server_data(sid)
     emit('initialization', server_data)
 
     # join room and send connect message
@@ -115,7 +115,7 @@ def handle_data(data: dict):
         emit('game_error', error)
 
     # grab updates
-    updates = game.get_update_data()
+    updates = game.get_update_data(sid)
 
     # emit data to appropriate channels
     # TODO remove address in message sent out

@@ -46,6 +46,6 @@ class GuessWho(GameInstance):
         self.updates.append(out_data)
 
     
-    def get_update_data(self) -> List[dict]:
-        return super().get_update_data()
+    def get_update_data(self, sid) -> List[dict]:
+        return super().get_update_data(sid)
     

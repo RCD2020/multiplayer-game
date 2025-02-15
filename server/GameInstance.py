@@ -55,7 +55,7 @@ class GameInstance:
         del self.sockets[sid]
 
 
-    def get_server_data(self) -> dict:
+    def get_server_data(self, sid) -> dict:
         'Grabs all existing server data to initialize client side'
 
         # return server data
@@ -77,7 +77,7 @@ class GameInstance:
         return None
 
 
-    def get_update_data(self) -> List[dict]:
+    def get_update_data(self, sid) -> List[dict]:
         'Grabs all the new server updates to send out'
 
         # grab update data
