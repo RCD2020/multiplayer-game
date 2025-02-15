@@ -49,6 +49,7 @@ class Clue(GameInstance):
             if message == None or not address:
                 return 'Missing Message or Address'
             
+            out_data['type'] = data_type
             out_data['user'] = user
             out_data['message'] = message
             out_data['address'] = address
