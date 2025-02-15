@@ -12,7 +12,19 @@ from server.GameInstance import GameInstance
 class Clue(GameInstance):
 
     def __init__(self, id: str, settings: str):
-        super().__init__(id, settings, 'games/Clue/Clue.html', 6)
+        self.characters = {
+            'Scarlett': {},
+            'Mustard': {},
+            'Plum': {},
+            'White': {},
+            'Peacock': {},
+            'Green': {}
+        }
+
+        super().__init__(
+            id, settings,
+            'games/Clue/Clue.html', len(self.characters.keys())
+        )
 
         self.main_players = set()
 
