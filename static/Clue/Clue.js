@@ -14,7 +14,8 @@ var login_div = document.getElementById('login');
 var username = document.getElementById('username');
 var join_button = document.getElementById('join');
 
-var content = document.getElementById('content');
+// var content = document.getElementById('content');
+var chat = document.getElementById('chat');
 var messages = document.getElementById('messages');
 
 var errors = document.getElementById('errors');
@@ -39,21 +40,25 @@ function join_game() {
     });
 
     socket.on('initialization', function(server_data) {
-        content.removeAttribute('hidden');
+        // content.removeAttribute('hidden');
+        if (server_data['is_main_player']) {
+            chat.removeAttribute('hidden');
         
-        message_field.addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                event.preventDefault();
-                message = message_field.value;
-                message_field.value = '';
-                var data = {
-                    'type': 'message',
-                    'message': message,
-                    'address': 'room'
-                };
-                socket.emit('server_data', data);
-            }
-        });
+        
+            message_field.addEventListener('keypress', function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    message = message_field.value;
+                    message_field.value = '';
+                    var data = {
+                        'type': 'message',
+                        'message': message,
+                        'address': 'room'
+                    };
+                    socket.emit('server_data', data);
+                }
+            });
+        }
     });
 
     // backend validation
