@@ -106,3 +106,16 @@ class Clue(GameInstance):
 
         return True
     
+
+    def is_main_player(self, sid):
+        return self.sockets[sid] in self.main_players
+    
+
+    def get_server_data(self, sid):
+        data = {
+            'state': self.game_state,
+            'is_main_player': self.is_main_player(sid)
+        }
+
+        return data
+    
