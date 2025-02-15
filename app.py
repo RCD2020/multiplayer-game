@@ -115,7 +115,7 @@ def handle_data(data: dict):
         emit('game_error', error)
 
     # grab updates
-    updates = game.get_update_data(sid)
+    updates = game.get_update_data()
 
     # emit data to appropriate channels
     # TODO remove address in message sent out

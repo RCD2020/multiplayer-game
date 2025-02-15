@@ -77,7 +77,7 @@ class GameInstance:
         return None
 
 
-    def get_update_data(self, sid) -> List[dict]:
+    def get_update_data(self) -> List[dict]:
         'Grabs all the new server updates to send out'
 
         # grab update data
