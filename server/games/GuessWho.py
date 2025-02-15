@@ -29,6 +29,7 @@ class GuessWho(GameInstance):
 
         # add to updates
         out_data = {
+            'type': 'message',
             'user': user,
             'message': message,
             'address': address
@@ -48,4 +49,16 @@ class GuessWho(GameInstance):
     
     def get_update_data(self) -> List[dict]:
         return super().get_update_data()
+    
+
+    def register_sid(self, name, sid):
+        registered = super().register_sid(name, sid)
+        if registered:
+            self.updates.append({
+                'type': 'chat_event',
+                'message': f'{name} joined the game.',
+                'address': 'room'
+            })
+
+        return registered
     

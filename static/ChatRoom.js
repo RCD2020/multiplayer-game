@@ -76,7 +76,13 @@ function join_game() {
     socket.on('update', function(data) {
         // handle update data
         var message = document.createElement('p')
-        message.innerText = data['user'] + ': ' + data['message'];
+
+        if (data['type'] == 'chat_event') {
+            message.innerText = data['message'];
+        } else {
+            message.innerText = data['user'] + ': ' + data['message'];
+        }
+        
         messages.append(message);
     });
 

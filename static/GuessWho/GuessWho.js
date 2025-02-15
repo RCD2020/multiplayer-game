@@ -79,7 +79,12 @@ function join_game() {
         // message.innerText = data['user'] + ': ' + data['message'];
         // made it so you can insert HTML for funzies
         // TODO: should probably remove this later
-        message.innerHTML = data['user'] + ': ' + data['message'];
+        if (data['type'] == 'chat_event') {
+            message.innerText = data['message'];
+        } else {
+            message.innerHTML = data['user'] + ': ' + data['message'];
+        }
+
         messages.prepend(message);
     });
 

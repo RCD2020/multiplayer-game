@@ -98,5 +98,11 @@ class Clue(GameInstance):
         if not self.game_state and len(self.main_players) < self.max_players:
             self.main_players.add(name)
 
+            self.updates.append({
+                'type': 'chat_event',
+                'message': f'{name} joined the game.',
+                'address': 'room'
+            })
+
         return True
     
