@@ -5,10 +5,11 @@ from oklab import rgb2oklab
 from card_colors import color_palette
 
 
-ISOKLABS = False
+ISOKLABS = True
 WIDTH = 216
 HEIGHT = 302
-IMG_URL = 'convert2card/images/input/scarlet.jpeg'
+IMG_NAME = 'mustard.jpg'
+IMG_URL = 'convert2card/images/input/' + IMG_NAME
 
 
 im = Image.open(IMG_URL)
@@ -27,5 +28,8 @@ for i in range(im.size[0]):
         
         pixels[i, j] = values[k]
 
+img_type = 'rgb'
+if ISOKLABS:
+    img_type = 'OKlabs'
 
-im.save('convert2card/images/output/out.png')
+im.save(f'convert2card/images/output/{IMG_NAME.split(".")[0]}_{img_type}.png')
