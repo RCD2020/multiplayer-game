@@ -17,7 +17,7 @@ class Clue(GameInstance):
                 'inUse': False, 'player': None
             },
             'Mustard': {'inUse': False},
-            'Plum': {'inUse': False},
+            'Plum': {'True': False},
             'White': {'inUse': False},
             'Peacock': {'inUse': False},
             'Green': {'inUse': False}

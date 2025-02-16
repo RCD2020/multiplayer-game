@@ -48,6 +48,9 @@ function join_game() {
             var img = document.createElement('img');
             img.src = '/static/Clue/cards/players/' + character + '.png';
             img.id = character;
+            if (server_data['characters'][character]['inUse']) {
+                img.className = 'taken';
+            }
             character_select.appendChild(img);
             characters.push(img);
         }
