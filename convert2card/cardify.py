@@ -8,7 +8,7 @@ from card_colors import color_palette
 ISOKLABS = True
 WIDTH = 216
 HEIGHT = 302
-IMG_NAME = 'mustard.jpg'
+IMG_NAME = 'green.jpg'
 IMG_URL = 'convert2card/images/input/' + IMG_NAME
 
 
@@ -22,9 +22,9 @@ tree = spatial.KDTree(color_palette(ISOKLABS))
 for i in range(im.size[0]):
     for j in range(im.size[1]):
         if ISOKLABS:
-            _, k = tree.query(rgb2oklab(*pixels[i,j]))
+            _, k = tree.query(rgb2oklab(*pixels[i,j][0:3]))
         else:
-            _, k = tree.query(pixels[i,j])
+            _, k = tree.query(pixels[i,j][0:3])
         
         pixels[i, j] = values[k]
 
