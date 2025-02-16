@@ -42,7 +42,18 @@ function join_game() {
 
     socket.on('initialization', function(server_data) {
         // console.log(server_data);
-        
+
+        characters = [];
+        for (var character in server_data['characters']) {
+            var img = document.createElement('img');
+            img.src = '/static/Clue/cards/players/' + character + '.png';
+            img.id = character;
+            character_select.appendChild(img);
+            characters.push(img);
+        }
+        if (!server_data['state']) {
+            character_select.removeAttribute('hidden');
+        }
 
         if (server_data['is_main_player']) {
             chat.removeAttribute('hidden');
