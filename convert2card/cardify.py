@@ -13,7 +13,7 @@ IMG_URL = 'convert2card/images/input/' + IMG_NAME
 
 
 im = Image.open(IMG_URL)
-im.resize((WIDTH, HEIGHT))
+im = im.resize((WIDTH, HEIGHT))
 pixels = im.load()
 values = color_palette()
 tree = spatial.KDTree(color_palette(ISOKLABS))
