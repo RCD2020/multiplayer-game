@@ -13,7 +13,7 @@ class Clue(GameInstance):
 
     def __init__(self, id: str, settings: str):
         self.characters = {
-            'Scarlett': {
+            'Scarlet': {
                 'inUse': False, 'player': None
             },
             'Mustard': {'inUse': False},
