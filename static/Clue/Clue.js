@@ -15,6 +15,7 @@ var username = document.getElementById('username');
 var join_button = document.getElementById('join');
 
 // var content = document.getElementById('content');
+var character_select = document.getElementById('character_select');
 var chat = document.getElementById('chat');
 var messages = document.getElementById('messages');
 
@@ -40,7 +41,9 @@ function join_game() {
     });
 
     socket.on('initialization', function(server_data) {
-        // content.removeAttribute('hidden');
+        // console.log(server_data);
+        
+
         if (server_data['is_main_player']) {
             chat.removeAttribute('hidden');
         

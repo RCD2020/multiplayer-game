@@ -13,12 +13,14 @@ class Clue(GameInstance):
 
     def __init__(self, id: str, settings: str):
         self.characters = {
-            'Scarlett': {},
-            'Mustard': {},
-            'Plum': {},
-            'White': {},
-            'Peacock': {},
-            'Green': {}
+            'Scarlett': {
+                'inUse': False, 'player': None
+            },
+            'Mustard': {'inUse': False},
+            'Plum': {'inUse': False},
+            'White': {'inUse': False},
+            'Peacock': {'inUse': False},
+            'Green': {'inUse': False}
         }
 
         super().__init__(
@@ -116,7 +118,8 @@ class Clue(GameInstance):
     def get_server_data(self, sid):
         data = {
             'state': self.game_state,
-            'is_main_player': self.is_main_player(sid)
+            'is_main_player': self.is_main_player(sid),
+            'characters': self.characters
         }
 
         return data
