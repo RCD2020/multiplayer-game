@@ -56,7 +56,10 @@ function join_game() {
 
             if (!server_data['state']) {
                 img.addEventListener('click', function() {
-                    if (this.className != 'taken') {
+                    if (
+                        this.className != 'taken'
+                        || this.className != 'selected' // change this to && once you have fixed issue where after reconnecting, you cannot choose already chosen character
+                    ) {
                         let data = {
                             'type': 'character_select',
                             'character': this.id
@@ -66,28 +69,7 @@ function join_game() {
                 });
             } 
         }
-        // for (var character in server_data['characters']) {
-        //     var img = document.createElement('img');
-        //     img.src = '/static/Clue/cards/players/' + character + '.png';
-        //     img.id = character;
-        //     if (server_data['characters'][character]['inUse']) {
-        //         img.className = 'taken';
-        //     }
-        //     character_select.appendChild(img);
 
-        //     if (!server_data['state']) {
-        //         img.addEventListener('click', function () {
-        //             if (img.className != 'taken') {
-        //                 let data = {
-        //                     'type': 'character_select',
-        //                     'character': img.id
-        //                 };
-
-        //                 socket.emit('server_data', data);
-        //             }
-        //         });
-        //     }
-        // }
         if (!server_data['state']) {
             character_select.removeAttribute('hidden');
         }
@@ -132,6 +114,7 @@ function join_game() {
 
     socket.on('update', function(data) {
         // handle update data
+        console.log(data);
         
         // message.innerText = data['user'] + ': ' + data['message'];
         // made it so you can insert HTML for funzies
@@ -144,6 +127,22 @@ function join_game() {
             var message = document.createElement('p')
             message.innerHTML = data['user'] + ': ' + data['message'];
             messages.prepend(message);
+        } else if (data['type'] == 'character_selected') {
+            var img = document.getElementById(data['character']);
+            if (img.className != 'selected') {
+                img.className = 'taken';
+            }
+            if (data['deselected']) {
+                img = document.getElementById(data['deselected']);
+                img.className = '';
+            }
+        } else if (data['type'] == 'character_select_success') {
+            var img = document.getElementById(data['character'])
+            let existing = document.getElementsByClassName('selected');
+            for (let i = 0; i < existing.length; i++) {
+                existing[i].className = '';
+            }
+            img.className = 'selected';
         }
 
         

@@ -60,6 +60,7 @@ def send_update(game, game_id):
     # emit data to appropriate channels
     # TODO remove address in message sent out
     for update in updates:
+        print(update)
         if update['address'] == 'room':
             emit('update', update, to=game_id)
         elif update['address'] == 'user':

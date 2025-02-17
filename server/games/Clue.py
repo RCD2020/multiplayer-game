@@ -17,7 +17,7 @@ class Clue(GameInstance):
                 'inUse': False, 'player': None
             },
             'Mustard': {'inUse': False},
-            'Plum': {'True': False},
+            'Plum': {'inUse': False},
             'White': {'inUse': False},
             'Peacock': {'inUse': False},
             'Green': {'inUse': False}
@@ -29,6 +29,7 @@ class Clue(GameInstance):
         )
 
         self.main_players = set()
+        self.main_to_char = {}
 
         # Game States
         #    0: Waiting for players
@@ -79,6 +80,38 @@ class Clue(GameInstance):
                 for recipient in target:
                     if self.users[recipient]:
                         out_data['target'].append(self.users[recipient])
+
+        elif (
+            data_type == 'character_select'
+            and self.game_state == 0
+            and data.get('character')
+            and data.get('character') in self.characters
+            and not self.characters[data.get('character')]['inUse']
+        ):
+            character = data.get('character')
+
+            out_data['type'] = 'character_selected'
+            out_data['character'] = data.get('character')
+            out_data['address'] = 'room'
+
+            if user in self.main_to_char:
+                old_char = self.main_to_char[user]
+                self.characters[old_char]['inUse'] = False
+                self.characters[old_char]['player'] = None
+                out_data['deselected'] = old_char
+            
+            self.characters[character]['inUse'] = True
+            self.characters[character]['player'] = user
+            self.main_to_char[user] = character
+
+            self.updates.append({
+                'type': 'character_select_success',
+                'character': character,
+                'address': 'user',
+                'target': [sid]
+            })
+            # print(self.characters)
+
 
 
         if out_data:
