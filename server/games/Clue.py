@@ -38,7 +38,7 @@ class Clue(GameInstance):
     def send_data(self, sid: str, data: dict):
         'Proccesses chat messages from the client'
 
-        # print(sid, data)
+        print(sid, data)
 
         # initialize out_data
         out_data = {}
@@ -81,8 +81,8 @@ class Clue(GameInstance):
                         out_data['target'].append(self.users[recipient])
 
 
-
-        self.updates.append(out_data)
+        if out_data:
+            self.updates.append(out_data)
     
 
     def register_sid(self, name, sid):

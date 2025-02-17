@@ -43,8 +43,9 @@ function join_game() {
     socket.on('initialization', function(server_data) {
         // console.log(server_data);
 
-        characters = [];
-        for (var character in server_data['characters']) {
+        chars = Object.keys(server_data['characters']);
+        for (let i = 0; i < chars.length; i++) {
+            character = chars[i];
             var img = document.createElement('img');
             img.src = '/static/Clue/cards/players/' + character + '.png';
             img.id = character;
@@ -52,8 +53,41 @@ function join_game() {
                 img.className = 'taken';
             }
             character_select.appendChild(img);
-            characters.push(img);
+
+            if (!server_data['state']) {
+                img.addEventListener('click', function() {
+                    if (this.className != 'taken') {
+                        let data = {
+                            'type': 'character_select',
+                            'character': this.id
+                        };
+                        socket.emit('server_data', data);
+                    }
+                });
+            } 
         }
+        // for (var character in server_data['characters']) {
+        //     var img = document.createElement('img');
+        //     img.src = '/static/Clue/cards/players/' + character + '.png';
+        //     img.id = character;
+        //     if (server_data['characters'][character]['inUse']) {
+        //         img.className = 'taken';
+        //     }
+        //     character_select.appendChild(img);
+
+        //     if (!server_data['state']) {
+        //         img.addEventListener('click', function () {
+        //             if (img.className != 'taken') {
+        //                 let data = {
+        //                     'type': 'character_select',
+        //                     'character': img.id
+        //                 };
+
+        //                 socket.emit('server_data', data);
+        //             }
+        //         });
+        //     }
+        // }
         if (!server_data['state']) {
             character_select.removeAttribute('hidden');
         }

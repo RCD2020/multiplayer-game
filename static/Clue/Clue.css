@@ -1,3 +1,8 @@
 .taken {
     filter: grayscale(100%) contrast(150%);
 }
+
+.selected {
+    outline: 2px solid white;
+    outline-offset: -5px;
+}
