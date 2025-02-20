@@ -91,25 +91,25 @@ class Clue(GameInstance):
             character = data.get('character')
 
             out_data['type'] = 'character_selected'
-            out_data['character'] = data.get('character')
             out_data['address'] = 'room'
 
             if user in self.main_to_char:
                 old_char = self.main_to_char[user]
                 self.characters[old_char]['inUse'] = False
                 self.characters[old_char]['player'] = None
-                out_data['deselected'] = old_char
             
             self.characters[character]['inUse'] = True
             self.characters[character]['player'] = user
             self.main_to_char[user] = character
 
-            self.updates.append({
-                'type': 'character_select_success',
-                'character': character,
-                'address': 'user',
-                'target': [sid]
-            })
+            out_data['characters'] = self.characters
+
+            # self.updates.append({
+            #     'type': 'character_select_success',
+            #     'character': character,
+            #     'address': 'user',
+            #     'target': [sid]
+            # })
             # print(self.characters)
 
 
@@ -152,7 +152,8 @@ class Clue(GameInstance):
         data = {
             'state': self.game_state,
             'is_main_player': self.is_main_player(sid),
-            'characters': self.characters
+            'characters': self.characters,
+            'username': self.sockets[sid]
         }
 
         return data

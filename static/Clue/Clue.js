@@ -11,7 +11,7 @@ function setRemoval(id, ms) {
 
 // elements
 var login_div = document.getElementById('login');
-var username = document.getElementById('username');
+var username_field = document.getElementById('username');
 var join_button = document.getElementById('join');
 
 // var content = document.getElementById('content');
@@ -21,6 +21,9 @@ var messages = document.getElementById('messages');
 
 var errors = document.getElementById('errors');
 var message_field = document.getElementById('message_field');
+
+// data
+var username = '';
 
 // connects to socket
 function join_game() {
@@ -33,7 +36,7 @@ function join_game() {
     socket.on('connect', function() {
         var data = {
             'game_id': game_id,
-            'username': username.value
+            'username': username_field.value
         };
 
         errors.innerHTML = '';
@@ -41,7 +44,9 @@ function join_game() {
     });
 
     socket.on('initialization', function(server_data) {
-        // console.log(server_data);
+        console.log(server_data);
+
+        username = server_data['username'];
 
         chars = Object.keys(server_data['characters']);
         for (let i = 0; i < chars.length; i++) {
@@ -50,7 +55,11 @@ function join_game() {
             img.src = '/static/Clue/cards/players/' + character + '.png';
             img.id = character;
             if (server_data['characters'][character]['inUse']) {
-                img.className = 'taken';
+                if (server_data['characters'][character]['player'] == username) {
+                    img.className = 'selected';
+                } else {
+                    img.className = 'taken';
+                }
             }
             character_select.appendChild(img);
 
@@ -58,7 +67,7 @@ function join_game() {
                 img.addEventListener('click', function() {
                     if (
                         this.className != 'taken'
-                        || this.className != 'selected' // change this to && once you have fixed issue where after reconnecting, you cannot choose already chosen character
+                        && this.className != 'selected'
                     ) {
                         let data = {
                             'type': 'character_select',
@@ -128,21 +137,20 @@ function join_game() {
             message.innerHTML = data['user'] + ': ' + data['message'];
             messages.prepend(message);
         } else if (data['type'] == 'character_selected') {
-            var img = document.getElementById(data['character']);
-            if (img.className != 'selected') {
-                img.className = 'taken';
+            chars = Object.keys(data['characters']);
+            for (let i = 0; i < chars.length; i++) {
+                var character = chars[i];
+                var img = document.getElementById(character);
+                if (data['characters'][character]['inUse']) {
+                    if (data['characters'][character]['player'] == username) {
+                        img.className = 'selected';
+                    } else {
+                        img.className = 'taken';
+                    }
+                } else {
+                    img.className = '';
+                }
             }
-            if (data['deselected']) {
-                img = document.getElementById(data['deselected']);
-                img.className = '';
-            }
-        } else if (data['type'] == 'character_select_success') {
-            var img = document.getElementById(data['character'])
-            let existing = document.getElementsByClassName('selected');
-            for (let i = 0; i < existing.length; i++) {
-                existing[i].className = '';
-            }
-            img.className = 'selected';
         }
 
         
@@ -152,7 +160,7 @@ function join_game() {
 
 // join game button
 join_button.onclick = function() {
-    if (!username.value) {
+    if (!username_field.value) {
         return;
     }
     login_div.style.display = 'None';
@@ -160,7 +168,7 @@ join_button.onclick = function() {
 };
 
 // joins game when enter is pressed
-username.addEventListener('keypress', function(event) {
+username_field.addEventListener('keypress', function(event) {
     if (event.key === 'Enter') {
         event.preventDefault();
         join_button.click();
