@@ -81,20 +81,21 @@ function join_game() {
         messages.prepend(message);
     });
 
-    socket.on('update', function(data) {
-        // handle update data
-        var message = document.createElement('p')
-        // message.innerText = data['user'] + ': ' + data['message'];
-        // made it so you can insert HTML for funzies
-        // TODO: should probably remove this later
-        if (data['type'] == 'chat_event') {
-            message.innerText = data['message'];
-        } else {
-            message.innerHTML = data['user'] + ': ' + data['message'];
-        }
+    // legacy update handler
+    // socket.on('update', function(data) {
+    //     // handle update data
+    //     var message = document.createElement('p')
+    //     // message.innerText = data['user'] + ': ' + data['message'];
+    //     // made it so you can insert HTML for funzies
+    //     // TODO: should probably remove this later
+    //     if (data['type'] == 'chat_event') {
+    //         message.innerText = data['message'];
+    //     } else {
+    //         message.innerHTML = data['user'] + ': ' + data['message'];
+    //     }
 
-        messages.prepend(message);
-    });
+    //     messages.prepend(message);
+    // });
 
 }
 
