@@ -53,19 +53,26 @@ def start_game():
 # ----------------------------------------------------------------------
 # PRODUCTION SOCKETS
 # ----------------------------------------------------------------------
-def send_update(game, game_id):
+def send_update(game):
     # grab updates
     updates = game.get_update_data()
 
     # emit data to appropriate channels
-    # TODO remove address in message sent out
+    # legacy update handler
+    # for update in updates:
+    #     print(update)
+    #     if update['address'] == 'room':
+    #         emit('update', update, to=game_id)
+    #     elif update['address'] == 'user':
+    #         for user in update['target']:
+    #             emit('update', update, to=user)
+
+    print(updates)
+
     for update in updates:
-        print(update)
-        if update['address'] == 'room':
-            emit('update', update, to=game_id)
-        elif update['address'] == 'user':
-            for user in update['target']:
-                emit('update', update, to=user)
+        for target in update['targets']:
+            # targets consist of either the game_id or the socket id
+            emit(update['event'], update['packet'], to=target)
 
 
 @socketio.on('connect_server')
@@ -105,7 +112,7 @@ def handle_connect_server(data):
         'message': f'{username} has joined the game'
     }, to=game_id)
 
-    send_update(game, game_id)
+    send_update(game)
 
 
 @socketio.on('disconnect')
@@ -132,7 +139,7 @@ def handle_data(data: dict):
         print(error, data)
         emit('game_error', error)
 
-    send_update(game, game_id)
+    send_update(game)
 
 
 # ----------------------------------------------------------------------

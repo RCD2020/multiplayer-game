@@ -15,7 +15,7 @@ class ChatRoom(GameInstance):
 
     
     def send_data(self, sid: str, data: dict):
-        'Proccesses chat messages from the client'
+        'Processes chat messages from the client'
 
         # verify correctly formatted
         user = self.sockets[sid]
@@ -29,22 +29,28 @@ class ChatRoom(GameInstance):
             return 'Invalid User'
 
         # add to updates
-        out_data = {
-            'user': user,
-            'message': message,
-            'address': address
-        }
+        event = 'chat_event'
+        targets = []
+        packet = user + ': ' + message
+        # packet = {
+        #     'message': message,
+        # }
         if address == 'user':
             target = data.get('target')
             if not target:
                 return 'Missing "target" on address type "user"'
             
-            out_data['target'] = []
             for recipient in target:
                 if self.users[recipient]:
-                    out_data['target'].append(self.users[recipient])
+                    targets.append(self.users[recipient])
+        else:
+            targets.append(self.id)
 
-        self.updates.append(out_data)
+        self.updates.append({
+            'event': event,
+            'targets': targets,
+            'packet': packet
+        })
 
     
     def get_update_data(self) -> List[dict]:
@@ -55,9 +61,9 @@ class ChatRoom(GameInstance):
         registered = super().register_sid(name, sid)
         if registered:
             self.updates.append({
-                'type': 'chat_event',
-                'message': f'{name} joined the game.',
-                'address': 'room'
+                'event': 'chat_event',
+                'packet': f'{name} joined the game.', # {'message': f'{name} joined the game.'},
+                'targets': [self.id]
             })
 
         return registered

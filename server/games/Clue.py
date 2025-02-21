@@ -41,8 +41,10 @@ class Clue(GameInstance):
 
         print(sid, data)
 
-        # initialize out_data
-        out_data = {}
+        # initialize packet
+        event = ''
+        targets = []
+        packet = {}
 
 
         # verify user
@@ -66,20 +68,20 @@ class Clue(GameInstance):
             if message == None or not address:
                 return 'Missing Message or Address'
             
-            out_data['type'] = data_type
-            out_data['user'] = user
-            out_data['message'] = message
-            out_data['address'] = address
+            event = 'chat_event'
+            packet['user'] = user
+            packet = user + ': ' + message
 
             if address == 'user':
                 target = data.get('target')
                 if not target:
                     return 'Missing "target" on address type "user"'
                 
-                out_data['target'] = []
                 for recipient in target:
                     if self.users[recipient]:
-                        out_data['target'].append(self.users[recipient])
+                        targets.append(self.users[recipient])
+            else:
+                targets.append(self.id)
 
         elif (
             data_type == 'character_select'
@@ -90,8 +92,8 @@ class Clue(GameInstance):
         ):
             character = data.get('character')
 
-            out_data['type'] = 'character_selected'
-            out_data['address'] = 'room'
+            event = 'character_selected'
+            targets.append(self.id)
 
             if user in self.main_to_char:
                 old_char = self.main_to_char[user]
@@ -102,7 +104,7 @@ class Clue(GameInstance):
             self.characters[character]['player'] = user
             self.main_to_char[user] = character
 
-            out_data['characters'] = self.characters
+            packet['characters'] = self.characters
 
             # self.updates.append({
             #     'type': 'character_select_success',
@@ -114,8 +116,12 @@ class Clue(GameInstance):
 
 
 
-        if out_data:
-            self.updates.append(out_data)
+        if event:
+            self.updates.append({
+                'event': event,
+                'targets': targets,
+                'packet': packet
+            })
     
 
     def register_sid(self, name, sid):
@@ -136,9 +142,9 @@ class Clue(GameInstance):
             self.main_players.add(name)
 
             self.updates.append({
-                'type': 'chat_event',
-                'message': f'{name} joined the game.',
-                'address': 'room'
+                'event': 'chat_event',
+                'targets': [self.id],
+                'packet': f'{name} joined the game.'
             })
 
         return True

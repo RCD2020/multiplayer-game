@@ -28,23 +28,26 @@ class GuessWho(GameInstance):
             return 'Invalid User'
 
         # add to updates
-        out_data = {
-            'type': 'message',
-            'user': user,
-            'message': message,
-            'address': address
-        }
+        event = 'chat_event'
+        targets = []
+        packet = user + ': ' + message
+
         if address == 'user':
             target = data.get('target')
             if not target:
                 return 'Missing "target" on address type "user"'
             
-            out_data['target'] = []
             for recipient in target:
                 if self.users[recipient]:
-                    out_data['target'].append(self.users[recipient])
+                    targets.append(self.users[recipient])
+        else:
+            targets.append(self.id)
 
-        self.updates.append(out_data)
+        self.updates.append({
+            'event': event,
+            'targets': targets,
+            'packet': packet
+        })
 
     
     def get_update_data(self) -> List[dict]:
@@ -55,9 +58,9 @@ class GuessWho(GameInstance):
         registered = super().register_sid(name, sid)
         if registered:
             self.updates.append({
-                'type': 'chat_event',
-                'message': f'{name} joined the game.',
-                'address': 'room'
+                'event': 'chat_event',
+                'targets': [self.id],
+                'packet': f'{name} joined the game.'
             })
 
         return registered

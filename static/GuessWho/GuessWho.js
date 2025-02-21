@@ -73,6 +73,14 @@ function join_game() {
         setRemoval(err_id, 10000);
     });
 
+    socket.on('chat_event', function(packet) {
+        var message = document.createElement('p');
+
+        message.innerText = packet;
+
+        messages.prepend(message);
+    });
+
     socket.on('update', function(data) {
         // handle update data
         var message = document.createElement('p')

@@ -73,18 +73,28 @@ function join_game() {
         setRemoval(err_id, 10000);
     });
 
-    socket.on('update', function(data) {
-        // handle update data
-        var message = document.createElement('p')
+    // legacy update handler
+    // socket.on('update', function(data) {
+    //     // handle update data
+    //     var message = document.createElement('p')
 
-        if (data['type'] == 'chat_event') {
-            message.innerText = data['message'];
-        } else {
-            message.innerText = data['user'] + ': ' + data['message'];
-        }
+    //     if (data['type'] == 'chat_event') {
+    //         message.innerText = data['message'];
+    //     } else {
+    //         message.innerText = data['user'] + ': ' + data['message'];
+    //     }
         
-        messages.append(message);
-    });
+    //     messages.append(message);
+    // });
+
+    socket.on('chat_event', function (packet) {
+        // console.log(packet);
+        var message = document.createElement('p');
+
+        message.innerText = packet;
+
+        messages.prepend(message);
+    })
 
 }
 
