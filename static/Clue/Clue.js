@@ -145,43 +145,6 @@ function join_game() {
                 }
             }
     });
-
-    // legacy update handler
-    // socket.on('update', function(data) {
-    //     // handle update data
-    //     console.log(data);
-        
-    //     // message.innerText = data['user'] + ': ' + data['message'];
-    //     // made it so you can insert HTML for funzies
-    //     // TODO: should probably remove this later
-    //     if (data['type'] == 'chat_event') {
-    //         var message = document.createElement('p')
-    //         message.innerText = data['message'];
-    //         messages.prepend(message);
-    //     } else if (data['type'] == 'message') {
-    //         var message = document.createElement('p')
-    //         message.innerHTML = data['user'] + ': ' + data['message'];
-    //         messages.prepend(message);
-    //     } else if (data['type'] == 'character_selected') {
-    //         chars = Object.keys(data['characters']);
-    //         for (let i = 0; i < chars.length; i++) {
-    //             var character = chars[i];
-    //             var img = document.getElementById(character);
-    //             if (data['characters'][character]['inUse']) {
-    //                 if (data['characters'][character]['player'] == username) {
-    //                     img.className = 'selected';
-    //                 } else {
-    //                     img.className = 'taken';
-    //                 }
-    //             } else {
-    //                 img.className = '';
-    //             }
-    //         }
-    //     }
-
-        
-    // });
-
 }
 
 // join game button
