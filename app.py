@@ -9,7 +9,6 @@ from flask import Flask, render_template, redirect, request
 from flask_socketio import SocketIO, emit, join_room, disconnect
 
 import atexit
-import time
 from apscheduler.schedulers.background import BackgroundScheduler
 
 app = Flask(__name__)
