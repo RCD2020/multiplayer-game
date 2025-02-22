@@ -5,6 +5,7 @@ Robert Davis
 
 from typing import List
 from time import time
+import uuid
 
 from server.GameInstance import GameInstance
 
@@ -36,6 +37,12 @@ class Clue(GameInstance):
             'character_select': self.event_character_select,
             'ready': self.event_ready
         }
+
+        self.ready_data = {
+            'id': '',
+            'counter': 0
+        }
+        self.min_players = 3
 
         # Game States
         #    0: Waiting for players
@@ -139,6 +146,19 @@ class Clue(GameInstance):
             'targets': [self.id],
             'packet': self.characters
         })
+
+        if self.is_ready():
+            ready_id = uuid.uuid4()
+            self.ready_data['id'] = ready_id
+            self.ready_data['counter'] = 2
+
+            self.updates.append({
+                'event': 'chat_event',
+                'targets': [self.id],
+                'packet': 'Game starting in 3...',
+                'server_event': lambda: self.next_ready(ready_id),
+                'server_timer': 1
+            })
     
 
     def register_sid(self, name, sid):
@@ -182,4 +202,36 @@ class Clue(GameInstance):
         }
 
         return data
+    
+
+    def is_ready(self):
+        in_use_count = 0
+
+        for character, data in self.characters.items():
+            if data['inUse']:
+                in_use_count += 1
+
+                if not data['isReady']:
+                    return False
+                
+        if in_use_count >= self.min_players:
+            return True
+        
+
+    def next_ready(self, id):
+        # print(self.ready_data)
+
+        if id == self.ready_data['id'] and self.is_ready():
+            if self.ready_data['counter'] > 0:
+                self.updates.append({
+                    'event': 'chat_event',
+                    'targets': [self.id],
+                    'packet': f'Game starting in {self.ready_data["counter"]}...',
+                    'server_event': lambda: self.next_ready(id),
+                    'server_timer': 1
+                })
+                self.ready_data['counter'] -= 1
+            else:
+                print('start!!!!!!!!')
+
     

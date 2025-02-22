@@ -10,6 +10,7 @@ from flask_socketio import SocketIO, emit, join_room, disconnect
 
 import atexit
 from apscheduler.schedulers.background import BackgroundScheduler
+from datetime import datetime, timedelta
 
 app = Flask(__name__)
 socketio = SocketIO(app)
@@ -86,6 +87,23 @@ def send_update(game):
                 )
             else:
                 socketio.emit(update['event'], update['packet'], to=target)
+        
+        if update.get('server_event') and update.get('server_timer'):
+                def server_event():
+                    update['server_event']()
+                    send_update(game)
+
+                print(server_event, update['server_timer'], 'HERE!!!!')
+
+                run_date = (
+                    datetime.now() + timedelta(seconds=update['server_timer'])
+                )
+
+                scheduler.add_job(
+                    func=server_event,
+                    trigger='date',
+                    run_date=run_date
+                )
 
 
 @socketio.on('connect_server')
