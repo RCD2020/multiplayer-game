@@ -14,7 +14,7 @@ class Clue(GameInstance):
     def __init__(self, id: str, settings: str):
         self.characters = {
             'Scarlet': {
-                'inUse': False, 'player': None
+                'inUse': False, 'player': None, 'isReady': False
             },
             'Mustard': {'inUse': False},
             'Plum': {'inUse': False},
@@ -33,7 +33,8 @@ class Clue(GameInstance):
 
         self.events = {
             'message': self.event_message,
-            'character_select': self.event_character_select
+            'character_select': self.event_character_select,
+            'ready': self.event_ready
         }
 
         # Game States
@@ -89,10 +90,15 @@ class Clue(GameInstance):
         if self.characters[packet]['inUse']:
             return f'Error selecting character: {packet} already taken'
         
+        
 
         # server: deselect previously selected character
         if user in self.main_to_char:
             old_char = self.main_to_char[user]
+
+            if self.characters[old_char].get('isReady'):
+                return f'Error selecting character: {old_char} is in ready'
+            
             self.characters[old_char]['inUse'] = False
             self.characters[old_char]['player'] = None
         
@@ -103,6 +109,23 @@ class Clue(GameInstance):
 
 
         # send updated character selection to clients
+        self.updates.append({
+            'event': 'character_selected',
+            'targets': [self.id],
+            'packet': self.characters
+        })
+
+
+    def event_ready(self, sid, packet):
+        if self.game_state != 0:
+            return 'Error readying up: Game is not in character selection'
+
+
+        user = self.sockets[sid]
+        character = self.main_to_char[user]
+
+        self.characters[character]['isReady'] = packet
+
         self.updates.append({
             'event': 'character_selected',
             'targets': [self.id],

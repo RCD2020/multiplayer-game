@@ -16,6 +16,7 @@ var join_button = document.getElementById('join');
 
 // var content = document.getElementById('content');
 var character_select = document.getElementById('character_select');
+var ready_button = document.getElementById('ready_button');
 var chat = document.getElementById('chat');
 var messages = document.getElementById('messages');
 
@@ -24,6 +25,7 @@ var message_field = document.getElementById('message_field');
 
 // data
 var username = '';
+var current_char = '';
 
 // connects to socket
 function join_game() {
@@ -57,17 +59,31 @@ function join_game() {
             if (server_data['characters'][character]['inUse']) {
                 if (server_data['characters'][character]['player'] == username) {
                     img.className = 'selected';
+                    current_char = character;
+                    ready_button.removeAttribute('disabled');
+                    if (server_data['characters'][character]['isReady']) {
+                        ready_button.className = 'cancel';
+                        ready_button.innerText = 'Cancel';
+                    } else {
+                        ready_button.className = 'primed';
+                    }
                 } else {
                     img.className = 'taken';
+                }
+                if (server_data['characters'][character]['isReady']) {
+                    img.classList.add('ready');
                 }
             }
             character_select.appendChild(img);
 
             if (!server_data['state']) {
                 img.addEventListener('click', function() {
+                    let isready = current_char && document.getElementById(current_char).classList.contains('ready')
+
                     if (
                         this.className != 'taken'
                         && this.className != 'selected'
+                        && !isready
                     ) {
                         let data = {
                             'event': 'character_select',
@@ -81,8 +97,32 @@ function join_game() {
 
         if (!server_data['state']) {
             character_select.removeAttribute('hidden');
+
+            if (server_data['is_main_player']) {
+                ready_button.removeAttribute('hidden');
+                ready_button.addEventListener('click', function() {
+                    let value = ready_button.innerText;
+                    
+                    if (value == 'Ready') {
+                        ready_button.innerText = 'Cancel';
+                        ready_button.className = 'cancel';
+                        socket.emit('server_data', {
+                            'event': 'ready',
+                            'packet': true
+                        });
+                    } else {
+                        ready_button.innerText = 'Ready';
+                        ready_button.className = 'primed';
+                        socket.emit('server_data', {
+                            'event': 'ready',
+                            'packet': false
+                        });
+                    }
+                })
+            }
         }
 
+        // unhide chat
         if (server_data['is_main_player']) {
             chat.removeAttribute('hidden');
         
@@ -137,8 +177,18 @@ function join_game() {
                 if (packet[character]['inUse']) {
                     if (packet[character]['player'] == username) {
                         img.className = 'selected';
+                        current_char = character;
+
+                        if (ready_button.hasAttribute('disabled')) {
+                            ready_button.removeAttribute('disabled');
+                            ready_button.className = 'primed';
+                        }
                     } else {
                         img.className = 'taken';
+                    }
+
+                    if (packet[character]['isReady']) {
+                        img.classList.add('ready');
                     }
                 } else {
                     img.className = '';

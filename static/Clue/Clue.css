@@ -6,3 +6,20 @@
     outline: 2px solid white;
     outline-offset: -5px;
 }
+
+.primed {
+    background-color: greenyellow;
+}
+
+.cancel {
+    background-color: red;
+}
+
+.ready {
+    outline: 5px solid greenyellow;
+    outline-offset: -5px;
+}
+
+.taken.ready {
+    filter: grayscale(100%) sepia(100%) hue-rotate(95deg) saturate(150%);
+}
