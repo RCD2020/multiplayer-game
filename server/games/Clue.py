@@ -28,7 +28,7 @@ class Clue(GameInstance):
             'games/Clue/Clue.html', len(self.characters.keys())
         )
 
-        self.main_players = set()
+        self.main_players = {}
         self.main_to_char = {}
 
         self.events = {
@@ -44,7 +44,7 @@ class Clue(GameInstance):
     def send_data(self, sid: str, data: dict):
         'Proccesses chat messages from the client'
 
-        # print(sid, data)
+        print(sid, data)
 
         # verify user
         user = self.sockets[sid]
@@ -58,7 +58,7 @@ class Clue(GameInstance):
         packet = data.get('packet')
         if not event_type:
             return 'Invalid Data - Missing "event"'
-        if not packet:
+        if packet == None:
             return 'Invalid Data - Missing "packet"'
         if event_type not in self.events:
             return f'Invalid Data - event "{event_type}"'
@@ -124,8 +124,10 @@ class Clue(GameInstance):
 
         # if max players has not been reached and game is not in session,
         #    then add user to main players
-        if not self.game_state and len(self.main_players) < self.max_players:
-            self.main_players.add(name)
+        if not self.game_state and len(self.main_players.keys()) < self.max_players:
+            self.main_players[name] = {
+                'is_ready': False
+            }
 
             self.updates.append({
                 'event': 'chat_event',
