@@ -8,9 +8,14 @@ from server.ServerInstance import ServerInstance
 from flask import Flask, render_template, redirect, request
 from flask_socketio import SocketIO, emit, join_room, disconnect
 
+import atexit
+import time
+from apscheduler.schedulers.background import BackgroundScheduler
+
 app = Flask(__name__)
 socketio = SocketIO(app)
 server = ServerInstance()
+scheduler = BackgroundScheduler()
 
 
 # ----------------------------------------------------------------------
@@ -72,7 +77,16 @@ def send_update(game):
     for update in updates:
         for target in update['targets']:
             # targets consist of either the game_id or the socket id
-            emit(update['event'], update['packet'], to=target)
+            if update.get('timer'):
+                scheduler.add_job(
+                    func=lambda : socketio.emit(
+                        update['event'], update['packet'], to=target
+                    ),
+                    trigger='interval',
+                    seconds=update['timer']
+                )
+            else:
+                socketio.emit(update['event'], update['packet'], to=target)
 
 
 @socketio.on('connect_server')
@@ -161,4 +175,7 @@ def handle_send_server(json):
 
 
 if __name__ == '__main__':
+    scheduler.start()
+    atexit.register(lambda: scheduler.shutdown())
     socketio.run(app, host='0.0.0.0', debug=True)
+

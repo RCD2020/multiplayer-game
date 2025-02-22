@@ -76,6 +76,14 @@ class Clue(GameInstance):
             'packet': self.sockets[sid] + ': ' + packet
         })
 
+        # timed events test
+        # self.updates.append({
+        #     'event': 'chat_event',
+        #     'targets': [self.id],
+        #     'packet': 'wassup nerd',
+        #     'timer': 10
+        # })
+
 
     def event_character_select(self, sid, packet):
         # print('event_character_select:', packet)
