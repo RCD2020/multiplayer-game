@@ -47,8 +47,8 @@ function join_game() {
                 message = message_field.value;
                 message_field.value = '';
                 var data = {
-                    'message': message,
-                    'address': 'room'
+                    'event': 'message',
+                    'packet': message
                 };
                 socket.emit('server_data', data);
             }

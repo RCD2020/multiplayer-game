@@ -70,8 +70,8 @@ function join_game() {
                         && this.className != 'selected'
                     ) {
                         let data = {
-                            'type': 'character_select',
-                            'character': this.id
+                            'event': 'character_select',
+                            'packet': this.id
                         };
                         socket.emit('server_data', data);
                     }
@@ -93,9 +93,8 @@ function join_game() {
                     message = message_field.value;
                     message_field.value = '';
                     var data = {
-                        'type': 'message',
-                        'message': message,
-                        'address': 'room'
+                        'event': 'message',
+                        'packet': message
                     };
                     socket.emit('server_data', data);
                 }
@@ -131,12 +130,12 @@ function join_game() {
     });
 
     socket.on('character_selected', function(packet) {
-        chars = Object.keys(packet['characters']);
+        chars = Object.keys(packet);
             for (let i = 0; i < chars.length; i++) {
                 var character = chars[i];
                 var img = document.getElementById(character);
-                if (packet['characters'][character]['inUse']) {
-                    if (packet['characters'][character]['player'] == username) {
+                if (packet[character]['inUse']) {
+                    if (packet[character]['player'] == username) {
                         img.className = 'selected';
                     } else {
                         img.className = 'taken';

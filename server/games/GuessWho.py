@@ -12,41 +12,75 @@ class GuessWho(GameInstance):
     def __init__(self, id: str, settings: str):
         super().__init__(id, settings, 'games/GuessWho/GuessWho.html', 2)
 
+        self.events = {
+            'message': self.event_message
+        }
+
     
     def send_data(self, sid: str, data: dict):
         'Proccesses chat messages from the client'
 
-        # verify correctly formatted
-        user = self.sockets[sid]
-        message = data.get('message')
-        address = data.get('address')
-        if not user or message == None or not address:
-            return 'Invalid Data'
+        # print(sid, data)
 
         # verify user
+        user = self.sockets[sid]
         if user not in self.users:
             return 'Invalid User'
 
-        # add to updates
-        event = 'chat_event'
-        targets = []
-        packet = user + ': ' + message
+        # call correct event
+        event_type = data.get('event')
+        packet = data.get('packet')
+        if not event_type:
+            return 'Invalid Data - Missing "event"'
+        if not packet:
+            return 'Invalid Data - Missing "packet"'
+        if event_type not in self.events:
+            return f'Invalid Data - event "{event_type}"'
+        
+        return self.events[event_type](sid, packet)
 
-        if address == 'user':
-            target = data.get('target')
-            if not target:
-                return 'Missing "target" on address type "user"'
+        # legacy data
+        # # verify correctly formatted
+        # user = self.sockets[sid]
+        # message = data.get('message')
+        # address = data.get('address')
+        # if not user or message == None or not address:
+        #     return 'Invalid Data'
+
+        # # verify user
+        # if user not in self.users:
+        #     return 'Invalid User'
+
+        # # add to updates
+        # event = 'chat_event'
+        # targets = []
+        # packet = user + ': ' + message
+
+        # if address == 'user':
+        #     target = data.get('target')
+        #     if not target:
+        #         return 'Missing "target" on address type "user"'
             
-            for recipient in target:
-                if self.users[recipient]:
-                    targets.append(self.users[recipient])
-        else:
-            targets.append(self.id)
+        #     for recipient in target:
+        #         if self.users[recipient]:
+        #             targets.append(self.users[recipient])
+        # else:
+        #     targets.append(self.id)
+
+        # self.updates.append({
+        #     'event': event,
+        #     'targets': targets,
+        #     'packet': packet
+        # })
+
+
+    def event_message(self, sid, packet):
+        # print('event_message:', packet)
 
         self.updates.append({
-            'event': event,
-            'targets': targets,
-            'packet': packet
+            'event': 'chat_event',
+            'targets': [self.id],
+            'packet': self.sockets[sid] + ': ' + packet
         })
 
     
