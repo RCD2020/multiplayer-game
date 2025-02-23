@@ -23,7 +23,7 @@ class Clue(GameInstance):
         max_players = self.game_data['max_players']
         self.min_players = min(self.game_data['min_players'])
         self.characters = {
-            x.split('.')[0]: {'inUse': False}
+            x: {'inUse': False}
             for x in self.game_data['available_players']
         }
         self.map_id = None
@@ -268,10 +268,7 @@ class Clue(GameInstance):
         playable_characters = shorten_list(
             [
                 x for x
-                in [
-                    x.split('.')[0] for x
-                    in self.game_data['available_players']
-                ]
+                in self.game_data['available_players']
                 if x not in playable_characters
             ],
             self.game_data_2['player_count'] - len(playable_characters)
@@ -280,10 +277,6 @@ class Clue(GameInstance):
             self.game_data['available_weapons'],
             self.game_data_2['weapon_count']
         )
-        usable_weapons = [
-            x.split('.')[0] for x
-            in usable_weapons
-        ]
 
         print(playable_characters)
         print(usable_weapons)

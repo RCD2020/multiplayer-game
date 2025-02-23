@@ -1,19 +1,19 @@
 {
     "available_players": [
-        "Green.png",
-        "Mustard.png",
-        "Peacock.png",
-        "Plum.png",
-        "Scarlet.png",
-        "White.png"
+        "Green",
+        "Mustard",
+        "Peacock",
+        "Plum",
+        "Scarlet",
+        "White"
     ],
     "available_weapons": [
-        "Candlestick.png",
-        "Knife.png",
-        "Lead Pipe.png",
-        "Revolver.png",
-        "Rope.png",
-        "Wrench.png"
+        "Candlestick",
+        "Knife",
+        "Lead Pipe",
+        "Revolver",
+        "Rope",
+        "Wrench"
     ],
     "max_players": 6,
     "min_players": [3],
@@ -22,15 +22,15 @@
         "weapon_count": 6,
         "player_count": 6,
         "rooms": [
-            "Ballroom.png",
-            "Billiard Room.png",
-            "Conservatory.png",
-            "Dining Room.png",
-            "Hall.png",
-            "Kitchen.png",
-            "Library.png",
-            "Lounge.png",
-            "Study.png"
+            "Ballroom",
+            "Billiard Room",
+            "Conservatory",
+            "Dining Room",
+            "Hall",
+            "Kitchen",
+            "Library",
+            "Lounge",
+            "Study"
         ]
     }
 }
