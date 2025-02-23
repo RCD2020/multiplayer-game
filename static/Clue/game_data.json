@@ -1,0 +1,33 @@
+{
+    "available_players": [
+        "Green.png",
+        "Mustard.png",
+        "Peacock.png",
+        "Plum.png",
+        "Scarlet.png",
+        "White.png"
+    ],
+    "max_players": [6],
+    "6": {
+        "map": "Clue.jpg",
+        "weapons": [
+            "Candlestick.png",
+            "Knife.png",
+            "Lead Pipe.png",
+            "Revolver.png",
+            "Rope.png",
+            "Wrench.png"
+        ],
+        "rooms": [
+            "Ballroom.png",
+            "Billiard Room.png",
+            "Conservatory.png",
+            "Dining Room.png",
+            "Hall.png",
+            "Kitchen.png",
+            "Library.png",
+            "Lounge.png",
+            "Study.png"
+        ]
+    }
+}
