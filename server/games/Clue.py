@@ -218,6 +218,8 @@ class Clue(GameInstance):
             'username': self.sockets[sid]
         }
 
+        if self.game_state > 0:
+            data['map_data'] = self.map_data()
         if self.sockets[sid] in self.main_players and self.game_state > 0:
             data['player_cards'] = self.main_players[self.sockets[sid]]['cards']
 
@@ -336,7 +338,7 @@ class Clue(GameInstance):
             'event': 'start_game',
             'targets': [self.id],
             'packet': {
-                'test': 'data here'
+                'map_data': self.map_data()
             }
         })
         
@@ -346,4 +348,12 @@ class Clue(GameInstance):
                 'targets': [self.users[x]],
                 'packet': self.main_players[x]['cards']
             })
+
+    
+    def map_data(self):
+        return {
+            'map_file': self.game_data_2['map'],
+            'map_width': self.game_data_2['map_width'],
+            'map_height': self.game_data_2['map_height']
+        }
     

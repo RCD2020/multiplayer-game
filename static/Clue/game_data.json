@@ -21,6 +21,8 @@
         "map": "Clue.jpg",
         "weapon_count": 6,
         "player_count": 6,
+        "map_width": 1078,
+        "map_height": 1097,
         "rooms": [
             "Ballroom",
             "Billiard Room",

@@ -53,6 +53,26 @@ function add_cards_container(cards) {
     }
 }
 
+function add_map(map_data) {
+    console.log(map_data);
+
+    game_board.removeAttribute('hidden');
+
+    var canvas = document.createElement('canvas');
+    canvas.width = map_data['map_width'];
+    canvas.height = map_data['map_height'];
+
+    var ctx = canvas.getContext('2d');
+
+    var img = new Image();
+    img.onload = function() {
+        ctx.drawImage(img, 0, 0);
+    };
+    img.src = '/static/Clue/map/' + map_data['map_file'];
+
+    game_board.appendChild(canvas);
+}
+
 // connects to socket
 function join_game() {
     var url = window.location.href;
@@ -167,10 +187,11 @@ function join_game() {
             });
         }
 
-        // if (server_data['state'] == 1) {
-        //     cards_container.removeAttribute('hidden');
-        //     game_board.removeAttribute('hidden');
-        // }
+        if (server_data['state'] == 1) {
+            // cards_container.removeAttribute('hidden');
+            game_board.removeAttribute('hidden');
+            add_map(server_data['map_data']);
+        }
 
         if (server_data['player_cards']) {
             add_cards_container(server_data['player_cards']);
@@ -236,6 +257,8 @@ function join_game() {
 
         character_select.setAttribute('hidden', true);
         ready_button.setAttribute('hidden', true);
+
+        add_map(packet['map_data']);
     });
 
     socket.on('start_cards', function(packet) {
