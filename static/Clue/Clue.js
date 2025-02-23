@@ -56,19 +56,21 @@ function add_cards_container(cards) {
 function add_map(map_data) {
     console.log(map_data);
 
-    game_board.removeAttribute('hidden');
+    game_board.style.display = 'inline-block';
+    game_board.style.backgroundImage = 'url("/static/Clue/map/' + map_data['map_file'] + '")';
+    // game_board.style.width = map_data['map_width'];
 
     var canvas = document.createElement('canvas');
     canvas.width = map_data['map_width'];
     canvas.height = map_data['map_height'];
 
-    var ctx = canvas.getContext('2d');
+    // var ctx = canvas.getContext('2d');
 
-    var img = new Image();
-    img.onload = function() {
-        ctx.drawImage(img, 0, 0);
-    };
-    img.src = '/static/Clue/map/' + map_data['map_file'];
+    // var img = new Image();
+    // img.onload = function() {
+    //     ctx.drawImage(img, 0, 0);
+    // };
+    // img.src = '/static/Clue/map/' + map_data['map_file'];
 
     game_board.appendChild(canvas);
 }
