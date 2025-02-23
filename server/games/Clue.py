@@ -7,6 +7,7 @@ from typing import List
 from time import time
 import uuid
 from json import loads
+from random import choice
 
 from server.GameInstance import GameInstance
 from server.games.Clue_Helper import shorten_list
@@ -217,6 +218,9 @@ class Clue(GameInstance):
             'username': self.sockets[sid]
         }
 
+        if self.sockets[sid] in self.main_players and self.game_state > 0:
+            data['player_cards'] = self.main_players[self.sockets[sid]]['cards']
+
         return data
     
 
@@ -277,9 +281,55 @@ class Clue(GameInstance):
             self.game_data['available_weapons'],
             self.game_data_2['weapon_count']
         )
+        movable_rooms: list = self.game_data_2['rooms'].copy()
 
-        print(playable_characters)
-        print(usable_weapons)
+        self.game_characters = playable_characters.copy()
+        self.game_weapons = usable_weapons.copy()
+        self.game_rooms = movable_rooms.copy()
+
+        # print(playable_characters)
+        # print(usable_weapons)
+    
+
+        # pick place, weapon, killer
+        place = choice(movable_rooms)
+        weapon = choice(usable_weapons)
+        killer = choice(playable_characters)
+
+        self.crime = {
+            'room': place,
+            'weapon': weapon,
+            'killer': killer
+        }
+
+        print(self.crime)
+
+
+        # give out the rest of the cards
+        movable_rooms.remove(place)
+        usable_weapons.remove(weapon)
+        playable_characters.remove(killer)
+
+        cards = movable_rooms + usable_weapons + playable_characters
+
+        players = list(self.main_players.keys())
+        
+        for x in players:
+            self.main_players[x]['cards'] = []
+
+        i = 0
+        while (len(cards) > 0):
+            card = choice(cards)
+            cards.remove(card)
+
+            self.main_players[players[i]]['cards'].append(card)
+            i += 1
+            if i == len(players):
+                i = 0
+
+        # print(self.main_players)
+        print(self.users)
+
 
         # send start_game event to client
         self.updates.append({
@@ -289,4 +339,11 @@ class Clue(GameInstance):
                 'test': 'data here'
             }
         })
+        
+        for x in players:
+            self.updates.append({
+                'event': 'start_cards',
+                'targets': [self.users[x]],
+                'packet': self.main_players[x]['cards']
+            })
     

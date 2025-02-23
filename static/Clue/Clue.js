@@ -17,6 +17,9 @@ var join_button = document.getElementById('join');
 // var content = document.getElementById('content');
 var character_select = document.getElementById('character_select');
 var ready_button = document.getElementById('ready_button');
+var game_board = document.getElementById('game_board');
+var cards_container = document.getElementById('cards');
+
 var chat = document.getElementById('chat');
 var messages = document.getElementById('messages');
 
@@ -26,6 +29,29 @@ var message_field = document.getElementById('message_field');
 // data
 var username = '';
 var current_char = '';
+
+// page functions
+function add_cards_container(cards) {
+    cards_container.style.display = 'flex';
+    cards_container.style.flexWrap = 'wrap';
+
+    for (let i = 0; i < cards.length; i++) {
+        var img_container = document.createElement('div');
+        img_container.className = 'img_container';
+
+        var img = document.createElement('img');
+        img.src = '/static/Clue/cards/' + cards[i] + '.png';
+        img.id = cards[i];
+
+        var name = document.createElement('span');
+        name.innerText = cards[i];
+
+        img_container.appendChild(img);
+        img_container.appendChild(document.createElement('br'));
+        img_container.appendChild(name);
+        cards_container.appendChild(img_container);
+    }
+}
 
 // connects to socket
 function join_game() {
@@ -54,7 +80,7 @@ function join_game() {
         for (let i = 0; i < chars.length; i++) {
             character = chars[i];
             var img = document.createElement('img');
-            img.src = '/static/Clue/cards/players/' + character + '.png';
+            img.src = '/static/Clue/cards/' + character + '.png';
             img.id = character;
             if (server_data['characters'][character]['inUse']) {
                 if (server_data['characters'][character]['player'] == username) {
@@ -140,6 +166,15 @@ function join_game() {
                 }
             });
         }
+
+        // if (server_data['state'] == 1) {
+        //     cards_container.removeAttribute('hidden');
+        //     game_board.removeAttribute('hidden');
+        // }
+
+        if (server_data['player_cards']) {
+            add_cards_container(server_data['player_cards']);
+        }
     });
 
     // backend validation
@@ -197,8 +232,16 @@ function join_game() {
     });
 
     socket.on('start_game', function(packet) {
+        console.log(packet);
+
         character_select.setAttribute('hidden', true);
         ready_button.setAttribute('hidden', true);
+    });
+
+    socket.on('start_cards', function(packet) {
+        console.log(packet);
+
+        add_cards_container(packet);
     });
 }
 
