@@ -9,12 +9,15 @@ from card_colors import color_palette
 WIDTH = 216
 HEIGHT = 302
 IMAGES = [
-    'candlestick.jpg',
-    'knife.jpg',
-    'lead pipe.jpg',
-    'revolver.jpg',
-    'rope.png',
-    'wrench.png'
+    'ballroom.jpg',
+    'billiard room.jpg',
+    'conservatory.jpg',
+    'dining room.jpg',
+    'hall.jpg',
+    'kitchen.jpg',
+    'library.jpg',
+    'lounge.jpg',
+    'study.jpeg'
 ]
 
 
