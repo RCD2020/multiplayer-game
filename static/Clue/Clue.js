@@ -195,6 +195,11 @@ function join_game() {
                 }
             }
     });
+
+    socket.on('start_game', function(packet) {
+        character_select.setAttribute('hidden', true);
+        ready_button.setAttribute('hidden', true);
+    });
 }
 
 // join game button

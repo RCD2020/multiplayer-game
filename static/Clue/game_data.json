@@ -15,10 +15,12 @@
         "Rope.png",
         "Wrench.png"
     ],
-    "max_players": [6],
-    "6": {
+    "max_players": 6,
+    "min_players": [3],
+    "3": {
         "map": "Clue.jpg",
-        "weapons_count": 6,
+        "weapon_count": 6,
+        "player_count": 6,
         "rooms": [
             "Ballroom.png",
             "Billiard Room.png",

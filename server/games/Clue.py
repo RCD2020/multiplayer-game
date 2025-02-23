@@ -6,27 +6,42 @@ Robert Davis
 from typing import List
 from time import time
 import uuid
+from json import loads
 
 from server.GameInstance import GameInstance
+from server.games.Clue_Helper import shorten_list
 
 
 class Clue(GameInstance):
 
     def __init__(self, id: str, settings: str):
+
+        # read game_date file
+        with open('static/Clue/game_data.json') as f:
+            self.game_data = loads(f.read())
+        
+        max_players = self.game_data['max_players']
+        self.min_players = min(self.game_data['min_players'])
         self.characters = {
-            'Scarlet': {
-                'inUse': False, 'player': None, 'isReady': False
-            },
-            'Mustard': {'inUse': False},
-            'Plum': {'inUse': False},
-            'White': {'inUse': False},
-            'Peacock': {'inUse': False},
-            'Green': {'inUse': False}
+            x.split('.')[0]: {'inUse': False}
+            for x in self.game_data['available_players']
         }
+        self.map_id = None
+
+        # self.characters = {
+        #     'Scarlet': {
+        #         'inUse': False, 'player': None, 'isReady': False
+        #     },
+        #     'Mustard': {'inUse': False},
+        #     'Plum': {'inUse': False},
+        #     'White': {'inUse': False},
+        #     'Peacock': {'inUse': False},
+        #     'Green': {'inUse': False}
+        # }
 
         super().__init__(
             id, settings,
-            'games/Clue/Clue.html', len(self.characters.keys())
+            'games/Clue/Clue.html', max_players
         )
 
         self.main_players = {}
@@ -42,10 +57,11 @@ class Clue(GameInstance):
             'id': '',
             'counter': 0
         }
-        self.min_players = 3
+        # self.min_players = 3
 
         # Game States
         #    0: Waiting for players
+        #    1: Game started
         self.game_state = 0
 
     
@@ -232,6 +248,52 @@ class Clue(GameInstance):
                 })
                 self.ready_data['counter'] -= 1
             else:
-                print('start!!!!!!!!')
+                self.start_game()
 
+    
+    def start_game(self):
+        self.game_state = 1
+
+        # get which game is going
+        options = [
+            x for x
+            in self.game_data['min_players']
+            if x <= len(self.main_players.keys())
+        ]
+        game = str(max(options))
+        self.game_data_2 = self.game_data[game]
+
+
+        playable_characters = list(self.main_to_char.values())
+        playable_characters = shorten_list(
+            [
+                x for x
+                in [
+                    x.split('.')[0] for x
+                    in self.game_data['available_players']
+                ]
+                if x not in playable_characters
+            ],
+            self.game_data_2['player_count'] - len(playable_characters)
+        ) + playable_characters
+        usable_weapons = shorten_list(
+            self.game_data['available_weapons'],
+            self.game_data_2['weapon_count']
+        )
+        usable_weapons = [
+            x.split('.')[0] for x
+            in usable_weapons
+        ]
+
+        print(playable_characters)
+        print(usable_weapons)
+
+        # send start_game event to client
+        self.updates.append({
+            'event': 'start_game',
+            'targets': [self.id],
+            'packet': {
+                'test': 'data here'
+            }
+        })
     

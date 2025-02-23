@@ -93,7 +93,7 @@ def send_update(game):
                     update['server_event']()
                     send_update(game)
 
-                print(server_event, update['server_timer'], 'HERE!!!!')
+                # print(server_event, update['server_timer'], 'HERE!!!!')
 
                 run_date = (
                     datetime.now() + timedelta(seconds=update['server_timer'])
