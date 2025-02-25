@@ -51,7 +51,8 @@ class Clue(GameInstance):
         self.events = {
             'message': self.event_message,
             'character_select': self.event_character_select,
-            'ready': self.event_ready
+            'ready': self.event_ready,
+            'update_position': self.event_update_position
         }
 
         self.ready_data = {
@@ -176,6 +177,22 @@ class Clue(GameInstance):
                 'server_event': lambda: self.next_ready(ready_id),
                 'server_timer': 1
             })
+
+
+    def event_update_position(self, sid, packet):
+        user = self.sockets[sid]
+        character = self.main_to_char[user]
+
+        self.set_piece_position(character, packet)
+
+        self.updates.append({
+            'event': 'update_position',
+            'targets': [self.id],
+            'packet': {
+                'character': character,
+                'coords': packet
+            }
+        })
     
 
     def register_sid(self, name, sid):
@@ -291,6 +308,15 @@ class Clue(GameInstance):
 
         # print(playable_characters)
         # print(usable_weapons)
+
+        self.pieces = []
+        i = 0
+        for x in playable_characters:
+            self.pieces.append({
+                'character': x,
+                'coords': self.game_data_2['starting_positions'][i]
+            })
+            i += 1
     
 
         # pick place, weapon, killer
@@ -315,6 +341,7 @@ class Clue(GameInstance):
         cards = movable_rooms + usable_weapons + playable_characters
 
         players = list(self.main_players.keys())
+        self.turn_order = players
         
         for x in players:
             self.main_players[x]['cards'] = []
@@ -348,12 +375,20 @@ class Clue(GameInstance):
                 'targets': [self.users[x]],
                 'packet': self.main_players[x]['cards']
             })
+    
+
+    def set_piece_position(self, character, coord):
+        for x in self.pieces:
+            if x['character'] == character:
+                x['coords'] = coord
+                return
 
     
     def map_data(self):
         return {
             'map_file': self.game_data_2['map'],
             'map_width': self.game_data_2['map_width'],
-            'map_height': self.game_data_2['map_height']
+            'map_height': self.game_data_2['map_height'],
+            'pieces': self.pieces
         }
     

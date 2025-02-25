@@ -30,6 +30,85 @@ var message_field = document.getElementById('message_field');
 var username = '';
 var current_char = '';
 
+var socket = {
+    connect : function(url) {
+        this.socket = io.connect(url);
+    },
+    emit : function(event, packet) {
+        this.socket.emit(event, packet);
+    },
+    on : function(event, func) {
+        this.socket.on(event, func);
+    }
+};
+
+var game_canvas = {
+    canvas : document.createElement('canvas'),
+    start : function(
+        width, height, container, piece_data, settings
+    ) {
+        this.canvas.width = width;
+        this.canvas.height = height;
+        this.ctx = this.canvas.getContext('2d');
+        container.appendChild(this.canvas);
+        this.pieces = piece_data;
+        this.settings = settings;
+
+        this.canvas.addEventListener('mousedown', function (e) {
+            let coords = game_canvas.getCursorPosition(e);
+            console.log(coords);
+
+            socket.emit('server_data', {
+                'event': 'update_position',
+                'packet': coords
+            });
+        });
+
+        this.draw();
+    },
+    clear : function() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    },
+    draw : function() {
+        this.clear();
+
+        for (let i = 0; i < this.pieces.length; i++) {
+            let border_color = 'black';
+            if (this.pieces[i]['character'] == current_char) {
+                border_color = 'white';
+            }
+            this.draw_circle(this.pieces[i]['coords'], border_color);
+        }
+    },
+    draw_circle : function(coords, border_color) {
+        this.ctx.beginPath();
+        this.ctx.arc(...coords, 20, 0, 2*Math.PI);
+        this.ctx.fillStyle = 'red';
+        this.ctx.fill();
+        this.ctx.lineWidth = 4;
+        this.ctx.strokeStyle = border_color;
+        this.ctx.stroke();
+        this.ctx.closePath();
+    },
+    update_position : function(packet) {
+        for (let i = 0; i < this.pieces.length; i++) {
+            if (packet['character'] == this.pieces[i]['character']) {
+                this.pieces[i]['coords'] = packet['coords'];
+                break;
+            }
+        }
+
+        this.draw();
+    },
+    getCursorPosition : function (event) {
+        const rect = this.canvas.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+
+        return [x, y];
+    }
+}
+
 // page functions
 function add_cards_container(cards) {
     cards_container.style.display = 'flex';
@@ -58,11 +137,12 @@ function add_map(map_data) {
 
     game_board.style.display = 'inline-block';
     game_board.style.backgroundImage = 'url("/static/Clue/map/' + map_data['map_file'] + '")';
+
     // game_board.style.width = map_data['map_width'];
 
-    var canvas = document.createElement('canvas');
-    canvas.width = map_data['map_width'];
-    canvas.height = map_data['map_height'];
+    // var canvas = document.createElement('canvas');
+    // canvas.width = map_data['map_width'];
+    // canvas.height = map_data['map_height'];
 
     // var ctx = canvas.getContext('2d');
 
@@ -72,7 +152,11 @@ function add_map(map_data) {
     // };
     // img.src = '/static/Clue/map/' + map_data['map_file'];
 
-    game_board.appendChild(canvas);
+    // game_board.appendChild(canvas);
+    game_canvas.start(
+        map_data['map_width'], map_data['map_height'],
+        game_board, map_data['pieces']
+    )
 }
 
 // connects to socket
@@ -81,7 +165,7 @@ function join_game() {
     var game_id = url.slice(-6);
     url = url.slice(0, url.length - 12);
 
-    var socket = io.connect(url);
+    socket.connect(url);
 
     socket.on('connect', function() {
         var data = {
@@ -267,6 +351,10 @@ function join_game() {
         console.log(packet);
 
         add_cards_container(packet);
+    });
+
+    socket.on('update_position', function(packet) {
+        game_canvas.update_position(packet);
     });
 }
 
