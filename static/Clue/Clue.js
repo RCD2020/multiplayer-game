@@ -45,7 +45,7 @@ var socket = {
 var game_canvas = {
     canvas : document.createElement('canvas'),
     start : function(
-        width, height, container, piece_data, settings
+        width, height, container, piece_data, turn, settings
     ) {
         this.canvas.width = width;
         this.canvas.height = height;
@@ -53,15 +53,18 @@ var game_canvas = {
         container.appendChild(this.canvas);
         this.pieces = piece_data;
         this.settings = settings;
+        this.turn = turn;
 
         this.canvas.addEventListener('mousedown', function (e) {
             let coords = game_canvas.getCursorPosition(e);
-            console.log(coords);
+            // console.log(coords);
 
-            socket.emit('server_data', {
-                'event': 'update_position',
-                'packet': coords
-            });
+            if (game_canvas.turn == username) {
+                socket.emit('server_data', {
+                    'event': 'update_position',
+                    'packet': coords
+                });
+            }
         });
 
         this.draw();
@@ -84,7 +87,7 @@ var game_canvas = {
     },
     draw_circle : function(coords, color, border_color) {
         this.ctx.beginPath();
-        this.ctx.arc(...coords, 20, 0, 2*Math.PI);
+        this.ctx.arc(...coords, 15, 0, 2*Math.PI);
         this.ctx.fillStyle = color;
         this.ctx.fill();
         this.ctx.lineWidth = 4;
@@ -108,6 +111,9 @@ var game_canvas = {
         const y = event.clientY - rect.top;
 
         return [x, y];
+    },
+    update_turn : function () {
+        
     }
 }
 
@@ -157,8 +163,8 @@ function add_map(map_data) {
     // game_board.appendChild(canvas);
     game_canvas.start(
         map_data['map_width'], map_data['map_height'],
-        game_board, map_data['pieces']
-    )
+        game_board, map_data['pieces'], map_data['turn']
+    );
 }
 
 // connects to socket

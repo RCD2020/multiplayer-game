@@ -7,7 +7,7 @@ from typing import List
 from time import time
 import uuid
 from json import loads
-from random import choice
+from random import choice, randint
 
 from server.GameInstance import GameInstance
 from server.games.Clue_Helper import shorten_list
@@ -24,7 +24,7 @@ class Clue(GameInstance):
         max_players = self.game_data['max_players']
         self.min_players = min(self.game_data['min_players'])
         self.characters = {
-            x: {'inUse': False}
+            x: {'inUse': False, 'isReady': False}
             for x in self.game_data['available_players']
         }
         self.map_id = None
@@ -183,16 +183,17 @@ class Clue(GameInstance):
         user = self.sockets[sid]
         character = self.main_to_char[user]
 
-        self.set_piece_position(character, packet)
+        if self.is_turn(sid):
+            self.set_piece_position(character, packet)
 
-        self.updates.append({
-            'event': 'update_position',
-            'targets': [self.id],
-            'packet': {
-                'character': character,
-                'coords': packet
-            }
-        })
+            self.updates.append({
+                'event': 'update_position',
+                'targets': [self.id],
+                'packet': {
+                    'character': character,
+                    'coords': packet
+                }
+            })
     
 
     def register_sid(self, name, sid):
@@ -252,6 +253,9 @@ class Clue(GameInstance):
 
                 if not data['isReady']:
                     return False
+                
+        if in_use_count != len(list(self.main_players.keys())):
+            return False
                 
         if in_use_count >= self.min_players:
             return True
@@ -343,6 +347,7 @@ class Clue(GameInstance):
 
         players = list(self.main_players.keys())
         self.turn_order = players
+        self.turn = 0
         
         for x in players:
             self.main_players[x]['cards'] = []
@@ -376,6 +381,8 @@ class Clue(GameInstance):
                 'targets': [self.users[x]],
                 'packet': self.main_players[x]['cards']
             })
+
+        self.player_turn()
     
 
     def set_piece_position(self, character, coord):
@@ -390,6 +397,43 @@ class Clue(GameInstance):
             'map_file': self.game_data_2['map'],
             'map_width': self.game_data_2['map_width'],
             'map_height': self.game_data_2['map_height'],
-            'pieces': self.pieces
+            'pieces': self.pieces,
+            'turn': self.turn_order[self.turn]
         }
+    
+    
+    def is_turn(self, sid):
+        if self.turn_order[self.turn] == self.sockets[sid]:
+            return True
+        return False
+
+
+    def next_turn(self):
+        self.turn += 1
+        if self.turn == len(self.turn_order):
+            self.turn = 0
+
+        # let players know whose turn it is
+        self.player_turn()
+
+
+    def chat_event(self, message, targets:list=None):
+        if targets == None:
+            targets = [self.id]
+
+        self.updates.append({
+            'event': 'chat_event',
+            'targets': targets,
+            'packet': message
+        })
+
+    
+    def player_turn(self):
+        user = self.turn_order[self.turn]
+
+        self.chat_event(f'It is {user}\'s turn.')
+
+        roll = randint(2, 12)
+        self.chat_event(f'{user} rolled a {roll}.')
+
     
