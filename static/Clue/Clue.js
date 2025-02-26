@@ -77,13 +77,15 @@ var game_canvas = {
             if (this.pieces[i]['character'] == current_char) {
                 border_color = 'white';
             }
-            this.draw_circle(this.pieces[i]['coords'], border_color);
+            this.draw_circle(
+                this.pieces[i]['coords'], this.pieces[i]['color'], border_color
+            );
         }
     },
-    draw_circle : function(coords, border_color) {
+    draw_circle : function(coords, color, border_color) {
         this.ctx.beginPath();
         this.ctx.arc(...coords, 20, 0, 2*Math.PI);
-        this.ctx.fillStyle = 'red';
+        this.ctx.fillStyle = color;
         this.ctx.fill();
         this.ctx.lineWidth = 4;
         this.ctx.strokeStyle = border_color;

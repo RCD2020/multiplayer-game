@@ -314,7 +314,8 @@ class Clue(GameInstance):
         for x in playable_characters:
             self.pieces.append({
                 'character': x,
-                'coords': self.game_data_2['starting_positions'][i]
+                'coords': self.game_data_2['starting_positions'][i],
+                'color': self.game_data['player_colors'][x]
             })
             i += 1
     

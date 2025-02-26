@@ -7,6 +7,14 @@
         "Scarlet",
         "White"
     ],
+    "player_colors": {
+        "Green": "#33ee33",
+        "Mustard": "#ffee00",
+        "Peacock": "#1155ff",
+        "Plum": "#ff44ff",
+        "Scarlet": "#ff2222",
+        "White": "#dddddd"
+    },
     "available_weapons": [
         "Candlestick",
         "Knife",
