@@ -117,6 +117,61 @@ var game_canvas = {
     }
 }
 
+var controls = {
+    start : function (
+        characters,
+        weapons,
+        rooms,
+        turn
+    ) {
+        this.person_select = document.getElementById('person_select');
+        this.weapon_select = document.getElementById('weapon_select');
+        this.room_select   = document.getElementById('room_select');
+        this.sugg_button   = document.getElementById('suggestion');
+        this.accu_button   = document.getElementById('accusation');
+        this.turn = turn;
+
+        document.getElementById('controls').removeAttribute('hidden');
+
+        for (let i = 0; i < characters.length; i++) {
+            var select = document.createElement('option');
+            select.value = characters[i];
+            select.innerText = characters[i];
+            this.person_select.appendChild(select);
+        }
+        for (let i = 0; i < weapons.length; i++) {
+            var select = document.createElement('option');
+            select.value = weapons[i];
+            select.innerText = weapons[i];
+            this.weapon_select.appendChild(select);
+        }
+        for (let i = 0; i < rooms.length; i++) {
+            var select = document.createElement('option');
+            select.value = rooms[i];
+            select.innerText = rooms[i];
+            this.room_select.appendChild(select);
+        }
+
+        this.update_turn(this.turn);
+    },
+    update_turn : function(turn) {
+        this.turn = turn;
+        if (this.turn == username) {
+            this.person_select.removeAttribute('disabled');
+            this.weapon_select.removeAttribute('disabled');
+            this.room_select.removeAttribute('disabled');
+            this.sugg_button.removeAttribute('disabled');
+            this.accu_button.removeAttribute('disabled');
+        } else {
+            this.person_select.setAttribute('disabled', true);
+            this.weapon_select.setAttribute('disabled', true);
+            this.room_select.setAttribute('disabled', true);
+            this.sugg_button.setAttribute('disabled', true);
+            this.accu_button.setAttribute('disabled', true);
+        }
+    }
+};
+
 // page functions
 function add_cards_container(cards) {
     cards_container.style.display = 'flex';
@@ -285,6 +340,15 @@ function join_game() {
             // cards_container.removeAttribute('hidden');
             game_board.removeAttribute('hidden');
             add_map(server_data['map_data']);
+
+            if (server_data['is_main_player']) {
+                controls.start(
+                    packet['card_data']['suspects'],
+                    packet['card_data']['weapons'],
+                    packet['card_data']['rooms'],
+                    packet['map_data']['turn']
+                )
+            }
         }
 
         if (server_data['player_cards']) {
@@ -353,6 +417,12 @@ function join_game() {
         ready_button.setAttribute('hidden', true);
 
         add_map(packet['map_data']);
+        controls.start(
+            packet['card_data']['suspects'],
+            packet['card_data']['weapons'],
+            packet['card_data']['rooms'],
+            packet['map_data']['turn']
+        )
     });
 
     socket.on('start_cards', function(packet) {

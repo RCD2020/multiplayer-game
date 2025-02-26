@@ -238,6 +238,7 @@ class Clue(GameInstance):
 
         if self.game_state > 0:
             data['map_data'] = self.map_data()
+            data['card_data'] = self.card_data()
         if self.sockets[sid] in self.main_players and self.game_state > 0:
             data['player_cards'] = self.main_players[self.sockets[sid]]['cards']
 
@@ -371,7 +372,8 @@ class Clue(GameInstance):
             'event': 'start_game',
             'targets': [self.id],
             'packet': {
-                'map_data': self.map_data()
+                'map_data': self.map_data(),
+                'card_data': self.card_data()
             }
         })
         
@@ -435,5 +437,13 @@ class Clue(GameInstance):
 
         roll = randint(2, 12)
         self.chat_event(f'{user} rolled a {roll}.')
+
+
+    def card_data(self):
+        return {
+            'suspects': self.game_characters,
+            'weapons': self.game_weapons,
+            'rooms': self.game_rooms
+        }
 
     
