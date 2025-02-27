@@ -169,6 +169,13 @@ var controls = {
             this.sugg_button.setAttribute('disabled', true);
             this.accu_button.setAttribute('disabled', true);
         }
+    },
+    get_selected : function() {
+        return {
+            'suspect': this.person_select.value,
+            'weapon': this.weapon_select.value,
+            'room': this.room_select
+        };
     }
 };
 
