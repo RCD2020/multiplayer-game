@@ -39,6 +39,12 @@ var socket = {
     },
     on : function(event, func) {
         this.socket.on(event, func);
+    },
+    send : function(event, packet) {
+        this.socket.emit('server_data', {
+            'event': event,
+            'packet': packet
+        });
     }
 };
 
@@ -152,6 +158,17 @@ var controls = {
             this.room_select.appendChild(select);
         }
 
+        this.sugg_button.addEventListener('click', function(e) {
+            let data = controls.get_selected();
+            let text = 'Would you like to suggest ';
+            text += `${data['suspect']} in the ${data['room']} `;
+            text += `with the ${data['weapon']}?`;
+
+            if (confirm(text)) {
+                socket.send('suggestion', data);
+            }
+        });
+
         this.update_turn(this.turn);
     },
     update_turn : function(turn) {
@@ -174,7 +191,7 @@ var controls = {
         return {
             'suspect': this.person_select.value,
             'weapon': this.weapon_select.value,
-            'room': this.room_select
+            'room': this.room_select.value
         };
     }
 };
@@ -350,10 +367,10 @@ function join_game() {
 
             if (server_data['is_main_player']) {
                 controls.start(
-                    packet['card_data']['suspects'],
-                    packet['card_data']['weapons'],
-                    packet['card_data']['rooms'],
-                    packet['map_data']['turn']
+                    server_data['card_data']['suspects'],
+                    server_data['card_data']['weapons'],
+                    server_data['card_data']['rooms'],
+                    server_data['map_data']['turn']
                 )
             }
         }
