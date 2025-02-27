@@ -164,6 +164,9 @@ def handle_data(data: dict):
     game_id = server.lookup_sid(sid)
     game = server.get_game(game_id)
 
+    if not game:
+        return
+
     # send data to GameInstance
     error = game.send_data(sid, data)
     if error:
