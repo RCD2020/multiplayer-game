@@ -169,6 +169,17 @@ var controls = {
             }
         });
 
+        this.accu_button.addEventListener('click', function(e) {
+            let data = controls.get_selected();
+            let text = 'Would you like to accuse ';
+            text += `${data['suspect']} in the ${data['room']} `;
+            text += `with the ${data['weapon']}?`;
+
+            if (confirm(text)) {
+                socket.send('accusation', data);
+            }
+        });
+
         this.update_turn(this.turn);
     },
     update_turn : function(turn) {
