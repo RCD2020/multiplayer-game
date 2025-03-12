@@ -52,7 +52,9 @@ class Clue(GameInstance):
             'message': self.event_message,
             'character_select': self.event_character_select,
             'ready': self.event_ready,
-            'update_position': self.event_update_position
+            'update_position': self.event_update_position,
+            'suggestion': self.event_suggestion,
+            'accusation': self.event_accusation
         }
 
         self.ready_data = {
@@ -65,6 +67,8 @@ class Clue(GameInstance):
         #    0: Waiting for players
         #    1: Game started
         self.game_state = 0
+
+        self.already_suggested = False
 
     
     def send_data(self, sid: str, data: dict):
@@ -90,7 +94,12 @@ class Clue(GameInstance):
             return f'Invalid Data - event "{event_type}"'
         
         return self.events[event_type](sid, packet)
+    
 
+
+    # ----------------------------------------------
+    #                  GAME EVENTS
+    # ----------------------------------------------
 
     def event_message(self, sid, packet):
         # print('event_message:', packet)
@@ -194,7 +203,39 @@ class Clue(GameInstance):
                     'coords': packet
                 }
             })
+
+
+    def event_suggestion(self, sid, packet):
+        user = self.sockets[sid]
+        character = self.main_to_char[user]
+
+        if self.is_turn(sid):
+            suspect = packet['suspect']
+            weapon = packet['weapon']
+            room = packet['room']
+
+
+
+            print(packet)
+            self.already_suggested = True 
+        else:
+            return 'Error: It is not your turn.'
+
+
+    def event_accusation(self, sid, packet):
+        user = self.sockets[sid]
+        character = self.main_to_char[user]
+
+        if self.is_turn(sid):
+            pass
+        else:
+            return 'Error: It is not your turn.'
     
+
+
+
+
+
 
     def register_sid(self, name, sid):
         '''
@@ -414,6 +455,7 @@ class Clue(GameInstance):
         self.turn += 1
         if self.turn == len(self.turn_order):
             self.turn = 0
+        self.already_suggested = False
 
         # let players know whose turn it is
         self.player_turn()
