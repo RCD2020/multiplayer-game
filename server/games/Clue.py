@@ -10,7 +10,7 @@ from json import loads
 from random import choice, randint
 
 from server.GameInstance import GameInstance
-from server.games.Clue_Helper import shorten_list
+from server.games.Clue_Helper import shorten_list, reorder_starting_from_player
 
 
 class Clue(GameInstance):
@@ -209,12 +209,40 @@ class Clue(GameInstance):
         user = self.sockets[sid]
         character = self.main_to_char[user]
 
+        if self.already_suggested:
+            return 'Already submitted suggestion'
+
         if self.is_turn(sid):
             suspect = packet['suspect']
             weapon = packet['weapon']
             room = packet['room']
 
+            ask_order = reorder_starting_from_player(self.turn_order, user)
 
+            print(ask_order)
+            print(user)
+            print(character)
+            print(self.main_players[user]['cards'])
+
+            self.chat_event(
+                f'{user}: I suggest that the crime was committed in the {room}'
+                f' by {suspect} with the {weapon}.'
+            )
+
+            for player in ask_order:
+                if (
+                    suspect in self.main_players[player]['cards']
+                    or weapon in self.main_players[player]['cards']
+                    or room in self.main_players[player]['cards']
+                ):
+                    self.chat_event(
+                        player + ': I suppose I\'ve heard a thing or two.'
+                    )
+                    break
+                else:
+                    self.chat_event(
+                        player + ': I\'ve not heard anything of these things.'
+                    )
 
             print(packet)
             self.already_suggested = True 
