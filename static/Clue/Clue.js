@@ -128,7 +128,8 @@ var controls = {
         characters,
         weapons,
         rooms,
-        turn
+        turn,
+        already_suggested
     ) {
         this.person_select = document.getElementById('person_select');
         this.weapon_select = document.getElementById('weapon_select');
@@ -136,6 +137,7 @@ var controls = {
         this.sugg_button   = document.getElementById('suggestion');
         this.accu_button   = document.getElementById('accusation');
         this.turn = turn;
+        this.already_suggested = already_suggested;
 
         document.getElementById('controls').removeAttribute('hidden');
 
@@ -166,6 +168,8 @@ var controls = {
 
             if (confirm(text)) {
                 socket.send('suggestion', data);
+                controls.sugg_button.setAttribute('disabled', true);
+                this.already_suggested = true;
             }
         });
 
@@ -184,17 +188,21 @@ var controls = {
     },
     update_turn : function(turn) {
         this.turn = turn;
+
+        this.sugg_button.setAttribute('disabled', true);
+
         if (this.turn == username) {
             this.person_select.removeAttribute('disabled');
             this.weapon_select.removeAttribute('disabled');
             this.room_select.removeAttribute('disabled');
-            this.sugg_button.removeAttribute('disabled');
+            if (!this.already_suggested) {
+                this.sugg_button.removeAttribute('disabled');
+            }
             this.accu_button.removeAttribute('disabled');
         } else {
             this.person_select.setAttribute('disabled', true);
             this.weapon_select.setAttribute('disabled', true);
             this.room_select.setAttribute('disabled', true);
-            this.sugg_button.setAttribute('disabled', true);
             this.accu_button.setAttribute('disabled', true);
         }
     },
@@ -381,7 +389,8 @@ function join_game() {
                     server_data['card_data']['suspects'],
                     server_data['card_data']['weapons'],
                     server_data['card_data']['rooms'],
-                    server_data['map_data']['turn']
+                    server_data['map_data']['turn'],
+                    server_data['already_suggested']
                 )
             }
         }

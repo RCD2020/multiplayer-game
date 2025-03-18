@@ -302,7 +302,8 @@ class Clue(GameInstance):
             'state': self.game_state,
             'is_main_player': self.is_main_player(sid),
             'characters': self.characters,
-            'username': self.sockets[sid]
+            'username': self.sockets[sid],
+            'already_suggested': self.already_suggested
         }
 
         if self.game_state > 0:
